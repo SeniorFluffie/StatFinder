@@ -2,13 +2,13 @@
 'use strict';
 
 const API_KEYS = [
-  {game: "fortnite", key: "428d3a9d-9dba-4686-a5b7-0aabcc2c83c5", url: "https://api.fortnitetracker.com/v1/profile/<sys>/<ign>", pcOnly: false},
-  {game: "league", key: "RGAPI-fc7ddd85-7e61-49cc-b004-ca0d25b25ee4", url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', pcOnly: true},
-  {game: "pubg", key: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIiLCJzY29wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.cSLVmj7wXePurD9HrEPbPXtFD5LS5uo_aftdzGNgbrY", url : "", pcOnly: true},
-  {game: "csgo", key: "2F0D06A2DD606DD12F2A27EEE173826A", url: "", pcOnly: true},
-  {game: "dota", key: "2F0D06A2DD606DD12F2A27EEE173826A", url: "", pcOnly: true},
-  {game: "overwatch", key: "", url: "", pcOnly: false},
-  {game: "osu", key: "7460bfcb582e755d640beef05016060ac8d9c87a", url: "", pcOnly: true},
+  {game: "fortnite", key: "428d3a9d-9dba-4686-a5b7-0aabcc2c83c5", url: "https://api.fortnitetracker.com/v1/profile/<sys>/<ign>", pcOnly: false, regions: false},
+  {game: "league", key: "RGAPI-fc7ddd85-7e61-49cc-b004-ca0d25b25ee4", url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', pcOnly: true, regions: true},
+  {game: "pubg", key: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIiLCJzY29wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.cSLVmj7wXePurD9HrEPbPXtFD5LS5uo_aftdzGNgbrY", url : "https://api.playbattlegrounds.com/shards/pc-na", pcOnly: true, regions: true},
+  {game: "csgo", key: "2F0D06A2DD606DD12F2A27EEE173826A", url: "", pcOnly: true, regions: true},
+  {game: "dota", key: "2F0D06A2DD606DD12F2A27EEE173826A", url: "", pcOnly: true, regions: true},
+  {game: "overwatch", key: "", url: "", pcOnly: false, regions: true},
+  {game: "osu", key: "7460bfcb582e755d640beef05016060ac8d9c87a", url: "", pcOnly: true, regions: false},
 ]
 
 const SYSTEM_TAGS = [
@@ -27,9 +27,8 @@ window.onload = function() {
     // save player name
     let IGN = searchBar.value;
     // if no name in field
-    if(IGN === "") {
+    if(IGN === "")
       alert("Please enter a valid In-Game-Name!");
-    }
     // else clear field and search
     else {
       searchBar.value = "";
@@ -59,7 +58,7 @@ function requestData(IGN, gameData) {
   let url;
   // set url for single-platform
   if(gameData.pcOnly)
-  url = gameData.url.replace("<ign>", IGN).replace("<key>", gameData.key);
+    url = gameData.url.replace("<ign>", IGN).replace("<key>", gameData.key);
   // else specify platform
   else {
     // get system select buttons
@@ -68,7 +67,7 @@ function requestData(IGN, gameData) {
     for(var j = 0; j < systemButtons.length; j++) {
       // if there is no system selected
       if(!$(systemButtons[j]).hasClass('active') && j === systemButtons.length - 1)
-      alert("Please select a console you would like to search the stats for!");
+        alert("Please select a console you would like to search the stats for!");
       // else stop on the active button
       else if($(systemButtons[j]).hasClass('active')) {
         url = gameData.url.replace("<sys>", SYSTEM_TAGS[j]).replace("<ign>", IGN).replace("<key>", gameData.key);
@@ -83,7 +82,9 @@ function requestData(IGN, gameData) {
   request.open('GET', url, true);
   // specific game options
   if(gameData.game === "fortnite")
-  request.setRequestHeader("TRN-Api-Key", gameData.key);
+    request.setRequestHeader("TRN-Api-Key", gameData.key);
+  else if(gameData.game === "pubg")
+    request.setRequestHeader("Authorization", "Bearer " + gameData.key);
   // instructions for when the message is recieved
   request.onreadystatechange = function() {
     // if request is valid, update window
@@ -114,13 +115,14 @@ function updatePopup(data, gameID) {
   // switch case to determine search
   switch(gameID) {
     case 0:
-    fortniteSearch();
+    fortniteSearch(data);
     break;
     case 1:
     leagueSearch(data);
     break;
     case 2:
     console.log("Begin PUBG Search");
+    pubgSearch(data);
     break;
     case 3:
     console.log("Begin CS:GO Search");
@@ -142,5 +144,9 @@ function fortniteSearch(data) {
 }
 
 function leagueSearch(data) {
+
+}
+
+function pubgSearch(data) {
 
 }

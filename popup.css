@@ -4,12 +4,25 @@
   background-position: center;
 }
 
-#orangeBackground {
-  margin: 0px;
-  border-radius: 3px;
+#gameSelect {
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
   width: 480px;
   height: 350px;
-  background-image: url("/images/background_orange.png");
+  outline: 3px solid black;
+  background-image: url("/images/background_gameSelect.png");
+}
+
+#statDisplay {
+  margin-top: 3px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  width: 480px;
+  height: 350px;
+  outline: 3px solid black;
+  background-image: url("/images/background_statDisplay.png");
 }
 
 .buttonGrid {
@@ -29,13 +42,13 @@
 }
 
 .gameButton:hover {
-  opacity: 1;
+  opacity: 1 !important;
   background-color: #FFFFFF !important;
   animation: spin 1000ms infinite ease-out 300ms forwards;
 }
 
 .gameButton.active {
-  opacity: 1;
+  opacity: 1 !important;
   animation: grow 400ms 1 linear forwards;
   background-color: #FFFFFF !important;
 }
@@ -93,22 +106,26 @@
   margin-right: auto;
   margin-top: 15px;
   outline: 1px dashed black;
+  background-color: rgb(255, 255, 255, 0.5);
   disabled: true;
+}
+
+.systemButton {
+  border-radius: 30px !important;
+  border: 1px solid black !important;
+  opacity: 0.5 !important;
 }
 
 #pcButton {
   background-image: url("/images/icon_pc.png");
-  border-radius: 30px;
 }
 
 #ps4Button {
   background-image: url("/images/icon_ps4.png");
-    border-radius: 30px;
 }
 
 #xboxButton {
   background-image: url("/images/icon_xbox.png");
-  border-radius: 30px;
 }
 
 .inputForm {
@@ -131,6 +148,7 @@
   color: rgb(105, 105, 105, 0.85);
   transition: 0.5s;
   border-radius: 8px;
+  border: 1px solid grey;
 }
 
 #searchBar:focus {
@@ -155,4 +173,76 @@
   background: rgb(128, 128, 128);
   box-shadow: inset 0px 0px 5px orange;
   outline: none;
+
+}
+
+.statBanner {
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-left: 15px;
+  margin-right: 5px;
+  height: 80px;
+  border: 2px solid black;
+  vertical-align: middle;
+  padding-top: 1.5%;
+}
+
+#playerIcon {
+  width: 60px;
+  height: 60px;
+  margin-left: 10px;
+  margin-right: 5px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#playerName {
+  width: 245px;
+  height: 30px;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: rgb(255, 255, 255, 0.6);
+  color: white;
+  border-radius: 3px;
+  border: 1px solid green;
+}
+
+@font-face {
+  font-family: UniSans;
+  src: url("/fonts/Uni Sans Heavy.otf");
+}
+
+#refreshButton {
+  font-family: UniSans;
+  width: 100px;
+  height: 25px;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: rgb(255, 255, 255, 0.6);
+  color: green;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px solid green;
+}
+
+#statTable {
+  background-color: rgb(255, 255, 255, 0.6);
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#statTable td, #statTable th, #statTable tr {
+  height: 20px;
+  color: black;
+  border: 1px solid black;
+}
+
+#statTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#statTable tr:hover {
+  background-color: #ddd;
 }
