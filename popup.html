@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel= "stylesheet" href = "popup.css" title = "external style sheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+  <div class = "standardImage" id = "orangeBackground">
+    <div name = "buttonGrid" id = "buttonGrid" class = "buttonGrid" data-toggle = "buttons-radio">
+      <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "fortniteButton" title = "Fortnite">
+      <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "leagueButton" title = "League of Legends">
+      <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "pubgButton" title = "PLAYERUNKNOWN'S BATTLEGROUNDS">
+      <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "csgoButton" title = "Counter Strike: Global Offensive">
+      <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "dotaButton" title = "Dota 2">
+      <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "overwatchButton" title = "Overwatch">
+      <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "osuButton" title = "osu!">
+    </div>
+    <div name = "systemSelector" id = "systemSelector" class = "systemSelector" data-toggle = "buttons-radio">
+      <button name = "systemButton" class = "btn btn-default gameButton standardImage" id = "pcButton" title = "PC" disabled>
+      <button name = "systemButton" class = "btn btn-default gameButton standardImage" id = "ps4Button" title = "PlayStation 4" disabled>
+      <button name = "systemButton" class = "btn btn-default gameButton standardImage" id = "xboxButton" title = "Xbox One" disabled>
+    </div>
+  <form onsubmit = "popup.js" async>
+    <div class = "inputForm">
+      <input class = "searchBar" type = "text" name = "IGN" placeholder = "Please enter your In-Game-Name" id = "searchBar" autofocus>
+      <input class = "inputForm" type = "submit" value = "Search" id = "searchButton">
+    </div>
+  </form>
+  </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src = "popup.js"> </script>
+<script src = "buttonToggle.js"></script>
+</html>

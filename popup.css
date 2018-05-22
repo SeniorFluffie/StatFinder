@@ -1,0 +1,158 @@
+.standardImage {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#orangeBackground {
+  margin: 0px;
+  border-radius: 3px;
+  width: 480px;
+  height: 350px;
+  background-image: url("/images/background_orange.png");
+}
+
+.buttonGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.gameButton {
+  margin: 15px;
+  width: 50px;
+  height: 50px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  opacity: 0.75;
+  transition: 0.4s;
+  background-color: #C0C0C0 !important;
+}
+
+.gameButton:hover {
+  opacity: 1;
+  background-color: #FFFFFF !important;
+  animation: spin 1000ms infinite ease-out 300ms forwards;
+}
+
+.gameButton.active {
+  opacity: 1;
+  animation: grow 400ms 1 linear forwards;
+  background-color: #FFFFFF !important;
+}
+
+@keyframes grow {
+    100% {
+        transform: scale(1.25) rotate(360deg);
+    }
+}
+
+@keyframes spin {
+  100% {
+     transform:rotate(360deg);
+  }
+}
+
+#fortniteButton {
+  background-image: url("/images/icon_fortnite.png");
+}
+
+#leagueButton {
+  background-image: url("/images/icon_league.png");
+}
+
+#leagueButton {
+  background-image: url("/images/icon_league.png");
+}
+
+#pubgButton {
+  background-image: url("/images/icon_pubg.png");
+}
+
+#csgoButton {
+  background-image: url("/images/icon_csgo.png");
+}
+
+#dotaButton {
+  background-image: url("/images/icon_dota.png");
+}
+
+#overwatchButton {
+  background-image: url("/images/icon_overwatch.png");
+}
+
+#osuButton {
+  background-image: url("/images/icon_osu.png");
+}
+
+.systemSelector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 240px;
+  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  outline: 1px dashed black;
+  disabled: true;
+}
+
+#pcButton {
+  background-image: url("/images/icon_pc.png");
+  border-radius: 30px;
+}
+
+#ps4Button {
+  background-image: url("/images/icon_ps4.png");
+    border-radius: 30px;
+}
+
+#xboxButton {
+  background-image: url("/images/icon_xbox.png");
+  border-radius: 30px;
+}
+
+.inputForm {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+  width: 450px;
+  height: 100px;
+  text-align: center;
+}
+
+#searchBar {
+  width: 435px;
+  height: 35px;
+  font-size: 24px;
+  text-align: center;
+  color: rgb(105, 105, 105, 0.85);
+  transition: 0.5s;
+  border-radius: 8px;
+}
+
+#searchBar:focus {
+  color: rgb(0, 0, 0, 1);
+}
+
+#searchButton {
+  width: 200px;
+  height: 45px;
+  font-size: 28px;
+  background: rgb(193, 193, 193);
+  box-shadow: inset 0px 0px 5px #000000;
+}
+
+#searchButton:hover {
+  background: rgb(229, 229, 229);
+  box-shadow: inset 0px 0px 5px rgb(193, 193, 193);
+  outline: none;
+}
+
+#searchButton:active {
+  background: rgb(128, 128, 128);
+  box-shadow: inset 0px 0px 5px orange;
+  outline: none;
+}
