@@ -17,13 +17,13 @@ const SYSTEM_TAGS = [
 
 window.onload = function() {
   // player search
-  let searchButton = document.getElementById('searchButton');
+  let searchButton = $("#searchButton").get(0);
   // when the search button is pressed
   searchButton.onclick = function(element) {
     // stop default post req
     element.preventDefault();
     // localize lookup data
-    let searchBar = document.getElementById('searchBar');
+    let searchBar = $("#searchBar").get(0);
     // save player name
     let IGN = searchBar.value;
     // if no name in field
@@ -39,18 +39,28 @@ window.onload = function() {
 
 // initial game lookup function
 function search(IGN) {
-  // localize the button grid
-  let gameButtons = document.getElementsByClassName("gameButton");
-  // iterate through all button elements
-  for(var i = 0; i < gameButtons.length; i++)
-  // stop on the active button
-  if($(gameButtons[i]).hasClass('active'))
-  // quit loop
-  break;
-  // add index property
-  API_KEYS[i].gameID = i;
-  // request data from the specific game (uses callback function as a closure)
-  requestData(IGN, API_KEYS[i]);
+  // create index flag
+  let gameIndex = 0;
+  // localize game buttons
+  let gameButtons = $(".gameButton").not(".systemButton");
+  // iterate through only game buttons
+  gameButtons.each(function() {
+    // if active, break loop
+    if($(this).hasClass('active'))
+      return false;
+    // increment index
+    gameIndex++;
+  });
+  // if a game is selected
+  if(gameIndex < gameButtons.length) {
+    // add index property
+    API_KEYS[gameIndex].gameID = gameIndex;
+    // request data from the specific game (uses callback function as a closure)
+    requestData(IGN, API_KEYS[gameIndex]);
+  }
+  // else display alert
+  else
+    alert("Please select a game to search stats for!");
 }
 
 function requestData(IGN, gameData) {
@@ -62,7 +72,7 @@ function requestData(IGN, gameData) {
   // else specify platform
   else {
     // get system select buttons
-    let systemButtons = document.getElementsByName("systemButton");
+    let systemButtons = $(".systemButton");
     // iterate through all button elements
     for(var j = 0; j < systemButtons.length; j++) {
       // if there is no system selected
@@ -71,7 +81,6 @@ function requestData(IGN, gameData) {
       // else stop on the active button
       else if($(systemButtons[j]).hasClass('active')) {
         url = gameData.url.replace("<sys>", SYSTEM_TAGS[j]).replace("<ign>", IGN).replace("<key>", gameData.key);
-        console.log("sys is " + SYSTEM_TAGS[j]);
         break;
       }
     }
@@ -90,28 +99,32 @@ function requestData(IGN, gameData) {
     // if request is valid, update window
     if(this.readyState == 4 && this.status == 200) {
       console.log("Code 200! Request Successful!");
-      updatePopup(this.responseText, gameData.gameID);
+      // parse the data
+      let data = JSON.parse(this.responseText);
+      // modify response
+      data.IGN = IGN;
+      // update window
+      updatePopup(data, gameData.gameID);
     }
     // else display the error code
     else if(this.readyState == 4 && this.status == 400)
-    console.log("Error 400! Bad Search Request!");
+    alert("Error 400! Bad Search Request!");
     else if(this.readyState == 4 && this.status == 401)
-    console.log("Error 401! Unauthorized Request!");
+    alert("Error 401! Unauthorized Request!");
     else if(this.readyState == 4 && this.status == 403)
-    console.log("Error 403! Forbidden Request!");
+    alert("Error 403! Forbidden Request!");
     else if(this.readyState == 4 && this.status == 404)
-    console.log("Error 404! Request Not Found!");
+    alert("Error 404! Request Not Found!");
     else if(this.readyState == 4 && this.status == 500)
-    console.log("Error 500! Internal Server Error!");
+    alert("Error 500! Internal Server Error!");
     else if(this.readyState == 4 && this.status == 503)
-    console.log("Error 503! Service Unavailable!");
+    alert("Error 503! Service Unavailable!");
   }
   // send get request
   request.send();
 }
 
 function updatePopup(data, gameID) {
-  console.log(data);
   // switch case to determine search
   switch(gameID) {
     case 0:
@@ -121,7 +134,6 @@ function updatePopup(data, gameID) {
     leagueSearch(data);
     break;
     case 2:
-    console.log("Begin PUBG Search");
     pubgSearch(data);
     break;
     case 3:
@@ -140,7 +152,63 @@ function updatePopup(data, gameID) {
 }
 
 function fortniteSearch(data) {
-
+  // data to retrieve data / construct table
+  const tableHeaders = [
+  {category: "lifeTimeStats", stats: [8, 9, 10, 11, 7, 2, 4, 5]},
+  {category: "stats", subcategory: "p2", stats: ["top1", "winRatio", "kills", "kd", "kpg", "matches", "top10", "top25"]},
+  {category: "stats", subcategory: "p10", stats: ["top1", "winRatio", "kills", "kd", "kpg", "matches", "top5", "top12"]},
+  {category: "stats", subcategory: "p9", stats: ["top1", "winRatio", "kills", "kd", "kpg", "matches", "top3", "top6"]}];
+  // cell labels and flag
+  const gameModes = ["OVERALL:", "SOLO:", "DUO:", "SQUADS:"];
+  // check for errors
+  if(data.error !== undefined)
+    alert("Player not found!");
+  else {
+    // set player name and image
+    $("#playerName").val(data.IGN);
+    $("#playerIcon").attr("src", "/images/avatar_fortnite.png");
+    // show stats
+    $("#statDisplay").fadeIn(500);
+    // create table (clear pre-existing)
+    $("#statTable").remove();
+    var statTable = $("<table>", {"id": "statTable", "name": "statTable", "class": "statTable"});
+    // iterate through the table
+    for(let i = 0; i < tableHeaders.length; i++) {
+      // create header text
+      let headerText = $("<th>", {"align": "center", "colspan": "8", "name" : "num " + i}).text(gameModes[i]);
+      let headerRow = $("<tr>").append(headerText);
+      // append header to table
+      statTable.append(headerRow);
+      // row to be added
+      let tableRow = $("<tr>", {"name" : "zop " + i});
+      // iterate through stats
+      for(let j = 0; j < tableHeaders[i].stats.length; j++) {
+        // cell to be added
+        let tableCell, cellKey, cellValue;
+        // if there is no sub-category (use different data)
+        if(tableHeaders[i].subcategory === undefined) {
+          // cell key (bolded) and cell value (not bolded)
+          cellKey = $("<span>").css("font-weight", "bold").text(data[tableHeaders[i].category][tableHeaders[i].stats[j]].key + ":\n\n");
+          cellValue = $("<span>").css("font-weight", "normal").text(data[tableHeaders[i].category][tableHeaders[i].stats[j]].value);
+        }
+        else {
+          // cell key (bolded) and cell value (not bolded)
+          cellKey = $("<span>").css("font-weight", "bold").text(data[tableHeaders[i].category][tableHeaders[i].subcategory][tableHeaders[i].stats[j]].label + ":\n\n");
+          cellValue = $("<span>").css("font-weight", "normal").text(data[tableHeaders[i].category][tableHeaders[i].subcategory][tableHeaders[i].stats[j]].value);
+        }
+        // append values to cell
+        tableCell = $("<td>").append(cellKey).append(cellValue);
+        // add cell to row
+        tableRow.append(tableCell);
+        }
+        // add table row to table
+        statTable.append(tableRow);
+    }
+    // add table to window
+    $("#statDisplay").append(statTable);
+    // hide game window
+    $("#gameSelect").css("display", "none");
+  }
 }
 
 function leagueSearch(data) {

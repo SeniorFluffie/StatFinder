@@ -32,9 +32,31 @@ $(document).on('click', '[name = "systemButton"]', function(event) {
   $(this).toggleClass('active').siblings().not(this).removeClass('active');
 });
 
+// if back is pressed
+$(document).on('click', '[name = "backButton"]', function(event) {
+  // show stats
+  $("#statDisplay").fadeOut(500, function() {
+    // display game window after animation
+    $("#gameSelect").css("display", "inline-block");
+  });
+  // go through each game button
+  $('[name = "gameButton"]').each(function() {
+    // if they are active
+    if($(this).hasClass("active"))
+      // deactivate
+      $(this).removeClass("active");
+  });
+  // disable console select
+  enableConsoles(false);
+});
+
+// if refresh is pressed
+$(document).on('click', '[name = "refreshButton"]', function(event) {
+});
+
 function enableConsoles(multiPlatform) {
   // get the platform buttons
-  let systemButtons = document.getElementsByName("systemButton");
+  let systemButtons = $(".systemButton");
   // iterate through them
   for(let i = 0; i < systemButtons.length; i++) {
     // enable the console buttons

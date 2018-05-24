@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-  <div class = "standardImage" id = "gameSelect">
+  <div class = "window standardImage" id = "gameSelect">
     <div name = "buttonGrid" id = "buttonGrid" class = "buttonGrid" data-toggle = "buttons-radio">
       <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "fortniteButton" title = "Fortnite">
       <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "leagueButton" title = "League of Legends">
@@ -16,8 +16,8 @@
       <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "osuButton" title = "osu!">
     </div>
     <div name = "systemSelector" id = "systemSelector" class = "systemSelector" data-toggle = "buttons-radio">
-      <button name = "systemButton" class = "btn btn-default gameButton standardImage systemButton" id = "pcButton" title = "PC" disabled>
-      <button name = "systemButton" class = "btn btn-default gameButton standardImage systemButton" id = "ps4Button" title = "PlayStation 4" disabled>
+      <button name = "systemButton" class = "systemButton btn btn-default gameButton standardImage" id = "pcButton" title = "PC" disabled>
+      <button name = "systemButton" class = "systemButton btn btn-default gameButton standardImage" id = "ps4Button" title = "PlayStation 4" disabled>
       <button name = "systemButton" class = "btn btn-default gameButton standardImage systemButton" id = "xboxButton" title = "Xbox One" disabled>
     </div>
   <form onsubmit = "popup.js" async>
@@ -27,39 +27,21 @@
     </div>
   </form>
   </div>
-  <div class = "standardImage" id = "statDisplay">
+  <body>
+  <div class = "window standardImage" id = "statDisplay">
     <div name = "statBanner" id = "statBanner" class = "statBanner">
       <img src = "/images/icon_xbox.png" name = "playerIcon" class = "playerIcon" id = "playerIcon" alt = "Player Icon">
       <input name = "playerName" class = "playerName" id = "playerName" readonly>
-      <button name = "refreshButton" class = "refreshButton" id = "refreshButton"> REFRESH </button>
+      <span name = "statButtons" id = "statButtons" class = "statButtons">
+        <button name = "backButton" class = "backButton" id = "backButton"> BACK </button>
+        <button name = "refreshButton" class = "refreshButton" id = "refreshButton"> REFRESH </button>
+      </span>
     </div>
-
-    <table id = "statTable">
-      <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-
   </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src = "popup.js"> </script>
-<script src = "buttonToggle.js"></script>
+<script src = "buttonToggle.js"> </script>
+<script src = "statHover.js"> </script>
 </html>
