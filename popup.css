@@ -264,7 +264,7 @@
   margin-top: 5px;
   height: 25px;
   width: 50px;
-  color: red;
+  color: rgb(220,20,60);
 }
 
 #refreshButton {
@@ -288,33 +288,33 @@
   margin-top: 10px;
   text-align: center;
   border: 1px solid black;
-  background-color: white;
 }
 
-#statTable tr {
+#statTable td {
   border: 1px solid black;
-  background: rgb(211,211,211);
   font-family: sans-serif;
 }
 
-#statTable tr:hover td {
+#statTable th {
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: GoodTime;
+}
+
+#statTable tr {
+  background-color: rgb(211,211,211);
+}
+
+#statTable tr:hover {
   background-color: white;
 }
 
-#statTable tr:nth-child(odd):hover tr {
-  background-color: green;
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  font-size: 14px;
-  font-family: GoodTime;
+.tableHover {
+  background-color: rgb(31, 188, 31) !important;
 }
 
-#statTable th {
-  background-color: green;
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  font-size: 14px;
-  font-family: GoodTime;
+.tableHeader {
+  background-color: green !important;
 }

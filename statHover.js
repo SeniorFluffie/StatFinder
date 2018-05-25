@@ -1,7 +1,11 @@
-  $(document).on('mouseenter', '#statTable tr:odd', function() {
-    $(this).prev().css("background-color", "red !important");
-  });
+// if the mouse enters a table row
+$(document).on('mouseenter', '#statTable tr', function() {
+  // swap default styling and hover
+  $(this).prev().find('th').removeClass('tableHeader').addClass('tableHover');
+});
 
-  $(document).on('mouseleave', '#statTable tr:odd', function() {
-    $(this).prev().css("background-color", "black !important");
-  });
+// if the mouse leaves a table row
+$(document).on('mouseleave', '#statTable tr', function() {
+  // swap default styling and hover
+  $(this).prev().find('th').removeClass('tableHover').addClass('tableHeader');
+});

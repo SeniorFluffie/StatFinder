@@ -5,6 +5,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
+  <audio id = "iconSound" src = "/sound/game_press.mp3" "type = audio/mp3"> </audio>
+  <audio id = "searchSound" src = "/sound/search_press.wav" "type = audio/wav"> </audio>
+  <audio id = "buttonSound" src = "/sound/button_press.wav" "type = audio/wav"> </audio>
   <div class = "window standardImage" id = "gameSelect">
     <div name = "buttonGrid" id = "buttonGrid" class = "buttonGrid" data-toggle = "buttons-radio">
       <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "fortniteButton" title = "Fortnite">
@@ -27,10 +30,9 @@
     </div>
   </form>
   </div>
-  <body>
   <div class = "window standardImage" id = "statDisplay">
     <div name = "statBanner" id = "statBanner" class = "statBanner">
-      <img src = "/images/icon_xbox.png" name = "playerIcon" class = "playerIcon" id = "playerIcon" alt = "Player Icon">
+      <img name = "playerIcon" class = "playerIcon" id = "playerIcon" alt = "Player Icon">
       <input name = "playerName" class = "playerName" id = "playerName" readonly>
       <span name = "statButtons" id = "statButtons" class = "statButtons">
         <button name = "backButton" class = "backButton" id = "backButton"> BACK </button>
@@ -41,7 +43,8 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src = "popup.js"> </script>
 <script src = "buttonToggle.js"> </script>
+<script src = "statButtons.js"> </script>
 <script src = "statHover.js"> </script>
+<script src = "popup.js"> </script>
 </html>
