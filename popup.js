@@ -3,7 +3,7 @@
 
 const API_KEYS = [
   {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', pcOnly: false, regions: false},
-  {game: 'league', key: 'RGAPI-fc7ddd85-7e61-49cc-b004-ca0d25b25ee4', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', pcOnly: true, regions: true},
+  {game: 'league', key: 'RGAPI-802c7269-e760-4897-9e1d-230afa30ce0e', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', pcOnly: true, regions: true},
   {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIiLCJzY29wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.cSLVmj7wXePurD9HrEPbPXtFD5LS5uo_aftdzGNgbrY', url : 'https://api.playbattlegrounds.com/shards/pc-na', pcOnly: true, regions: true},
   {game: 'csgo', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', pcOnly: true, regions: true},
   {game: 'dota', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', pcOnly: true, regions: true},
@@ -102,32 +102,41 @@ function requestData(IGN, gameData) {
     request.setRequestHeader('Authorization', 'Bearer ' + gameData.key);
   // instructions for when the message is recieved
   request.onreadystatechange = function() {
-    // if request is valid, update window
-    if(this.readyState == 4 && this.status == 200) {
+    let req = this;
+    // handle status codes
+    requestHandler({status: req.status, readyState: req.readyState, responseText: req.responseText}, function () {
       console.log('Code 200! Request Successful!');
       // parse the data
-      let data = JSON.parse(this.responseText);
+      let data = JSON.parse(req.responseText);
       // modify response
       data.IGN = IGN;
       // update window
       updatePopup(data, gameData.gameID);
-    }
-    // else display the error code
-    else if(this.readyState == 4 && this.status == 400)
-    alert('Error 400! Bad Search Request!');
-    else if(this.readyState == 4 && this.status == 401)
-    alert('Error 401! Unauthorized Request!');
-    else if(this.readyState == 4 && this.status == 403)
-    alert('Error 403! Forbidden Request!');
-    else if(this.readyState == 4 && this.status == 404)
-    alert('Error 404! Request Not Found!');
-    else if(this.readyState == 4 && this.status == 500)
-    alert('Error 500! Internal Server Error!');
-    else if(this.readyState == 4 && this.status == 503)
-    alert('Error 503! Service Unavailable!');
+    });
   }
   // send get request
   request.send();
+}
+
+function requestHandler(request, success) {
+  if(request.readyState == 4) {
+    // if success, run function
+    if(request.status == 200)
+      success();
+    // else display the error code
+    else if(status == 400)
+    alert('Error 400! Bad Search Request!');
+    else if(status == 401)
+    alert('Error 401! Unauthorized Request!');
+    else if(status == 403)
+    alert('Error 403! Forbidden Request!');
+    else if(status == 404)
+    alert('Error 404! Request Not Found!');
+    else if(status == 500)
+    alert('Error 500! Internal Server Error!');
+    else if( status == 503)
+    alert('Error 503! Service Unavailable!');
+  }
 }
 
 function updatePopup(data, gameID) {
@@ -178,6 +187,8 @@ function fortniteSearch(data) {
     // create table (clear pre-existing)
     $('#statTable').remove();
     var statTable = $('<table>', {'id': 'statTable', 'name': 'statTable', 'class': 'statTable'});
+    // add table to div then to window
+    $('#statDisplay').append($('#tableDiv').append(statTable));
     // iterate through the table
     for(let i = 0; i < tableHeaders.length; i++) {
       // create header text
@@ -210,15 +221,25 @@ function fortniteSearch(data) {
         // add table row to table
         statTable.append(tableRow);
     }
-    // add table to window
-    $('#statDisplay').append(statTable);
+    // add table to div then to window
+    $('#statDisplay').append($('#tableDiv').append(statTable));
     // hide game window
     $('#gameSelect').css('display', 'none');
   }
 }
 
-function leagueSearch(data) {
+const league_URLS = ['https://na1.api.riotgames.com/lol/champion-mastery/v3/scores/by-summoner/{summonerId}?api_key=<key>',
+'https://na1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{summonerId}?api_key=<key>',
+'https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/{summonerId}?api_key=<key>'];
 
+function leagueSearch(data) {
+  let player = {id: data.id, iconID: data.profileIconId, level: data.summonerLevel};
+  initalizeWindow();
+
+  // create XML request
+  let request = new XMLHttpRequest();
+  // open asynchronous get request
+  request.open('GET', url, true);
 }
 
 function pubgSearch(data) {
