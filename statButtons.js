@@ -1,3 +1,6 @@
+// for optimizations and debugging
+'use strict';
+
 // local search data, flag variable
 var recentSearch, gameMenu = false;
 

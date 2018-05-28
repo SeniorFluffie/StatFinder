@@ -1,3 +1,6 @@
+// for optimizations and debugging
+'use strict';
+
 // declare multi-platform games (using id)
 const multiPlatform = ['fortniteButton', 'overwatchButton'];
 

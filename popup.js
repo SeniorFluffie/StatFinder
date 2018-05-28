@@ -3,7 +3,7 @@
 
 const API_KEYS = [
   {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', pcOnly: false, regions: false},
-  {game: 'league', key: 'RGAPI-802c7269-e760-4897-9e1d-230afa30ce0e', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', pcOnly: true, regions: true},
+  {game: 'league', key: 'RGAPI-5a9456a1-60a4-42cf-b42a-0e9f15bbfb0b', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', pcOnly: true, regions: true},
   {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIiLCJzY29wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.cSLVmj7wXePurD9HrEPbPXtFD5LS5uo_aftdzGNgbrY', url : 'https://api.playbattlegrounds.com/shards/pc-na', pcOnly: true, regions: true},
   {game: 'csgo', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', pcOnly: true, regions: true},
   {game: 'dota', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', pcOnly: true, regions: true},
@@ -102,14 +102,15 @@ function requestData(IGN, gameData) {
     request.setRequestHeader('Authorization', 'Bearer ' + gameData.key);
   // instructions for when the message is recieved
   request.onreadystatechange = function() {
+    // request closure
     let req = this;
     // handle status codes
     requestHandler({status: req.status, readyState: req.readyState, responseText: req.responseText}, function () {
-      console.log('Code 200! Request Successful!');
       // parse the data
       let data = JSON.parse(req.responseText);
       // modify response
       data.IGN = IGN;
+      data.key = gameData.key;
       // update window
       updatePopup(data, gameData.gameID);
     });
@@ -119,22 +120,25 @@ function requestData(IGN, gameData) {
 }
 
 function requestHandler(request, success) {
-  if(request.readyState == 4) {
-    // if success, run function
-    if(request.status == 200)
+  if(request.readyState === 4) {
+    // if success
+    if(request.status === 200) {
+      console.log('Code 200! Request Successful!');
+      // run function
       success();
+    }
     // else display the error code
-    else if(status == 400)
+    else if(status === 400)
     alert('Error 400! Bad Search Request!');
-    else if(status == 401)
+    else if(status === 401)
     alert('Error 401! Unauthorized Request!');
-    else if(status == 403)
+    else if(status === 403)
     alert('Error 403! Forbidden Request!');
-    else if(status == 404)
+    else if(status === 404)
     alert('Error 404! Request Not Found!');
-    else if(status == 500)
+    else if(status === 500)
     alert('Error 500! Internal Server Error!');
-    else if( status == 503)
+    else if( status === 503)
     alert('Error 503! Service Unavailable!');
   }
 }
@@ -166,81 +170,18 @@ function updatePopup(data, gameID) {
   }
 }
 
-function fortniteSearch(data) {
-  // data to retrieve data / construct table
-  const tableHeaders = [
-  {category: 'lifeTimeStats', stats: [8, 9, 10, 11, 7, 2, 4, 5]},
-  {category: 'stats', subcategory: 'p2', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top10', 'top25']},
-  {category: 'stats', subcategory: 'p10', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top5', 'top12']},
-  {category: 'stats', subcategory: 'p9', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top3', 'top6']}];
-  // cell labels and flag
-  const gameModes = ['OVERALL:', 'SOLO:', 'DUO:', 'SQUADS:'];
-  // check for errors
-  if(data.error !== undefined)
-    alert('Player not found!');
-  else {
-    // set player name and image
-    $('#playerName').val(data.IGN);
-    $('#playerIcon').attr('src', '/images/avatar_fortnite.png');
-    // show stats
-    $('#statDisplay').fadeIn(500);
-    // create table (clear pre-existing)
-    $('#statTable').remove();
-    var statTable = $('<table>', {'id': 'statTable', 'name': 'statTable', 'class': 'statTable'});
-    // add table to div then to window
-    $('#statDisplay').append($('#tableDiv').append(statTable));
-    // iterate through the table
-    for(let i = 0; i < tableHeaders.length; i++) {
-      // create header text
-      let headerText = $('<th>', {align: 'center', colspan: '8'}).text(gameModes[i]);
-      let headerRow = $('<tr>', {class: 'tableHeader'}).append(headerText);
-      // append header to table
-      statTable.append(headerRow);
-      // row to be added
-      let tableRow = $('<tr>');
-      // iterate through stats
-      for(let j = 0; j < tableHeaders[i].stats.length; j++) {
-        // cell to be added
-        let tableCell, cellKey, cellValue;
-        // if there is no sub-category (use different data)
-        if(tableHeaders[i].subcategory === undefined) {
-          // cell key (bolded) and cell value (not bolded)
-          cellKey = $('<span>').css('font-weight', 'bold').css('display', 'block').text(data[tableHeaders[i].category][tableHeaders[i].stats[j]].key + ':');
-          cellValue = $('<span>').css('font-weight', 'normal').text(data[tableHeaders[i].category][tableHeaders[i].stats[j]].value);
-        }
-        else {
-          // cell key (bolded) and cell value (not bolded)
-          cellKey = $('<span>').css('font-weight', 'bold').css('display', 'block').text(data[tableHeaders[i].category][tableHeaders[i].subcategory][tableHeaders[i].stats[j]].label + ':');
-          cellValue = $('<span>').css('font-weight', 'normal').text(data[tableHeaders[i].category][tableHeaders[i].subcategory][tableHeaders[i].stats[j]].value);
-        }
-        // append values to cell
-        tableCell = $('<td>').append(cellKey).append(cellValue);
-        // add cell to row
-        tableRow.append(tableCell);
-        }
-        // add table row to table
-        statTable.append(tableRow);
-    }
-    // add table to div then to window
-    $('#statDisplay').append($('#tableDiv').append(statTable));
-    // hide game window
-    $('#gameSelect').css('display', 'none');
-  }
-}
-
-const league_URLS = ['https://na1.api.riotgames.com/lol/champion-mastery/v3/scores/by-summoner/{summonerId}?api_key=<key>',
-'https://na1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{summonerId}?api_key=<key>',
-'https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/{summonerId}?api_key=<key>'];
-
-function leagueSearch(data) {
-  let player = {id: data.id, iconID: data.profileIconId, level: data.summonerLevel};
-  initalizeWindow();
-
-  // create XML request
-  let request = new XMLHttpRequest();
-  // open asynchronous get request
-  request.open('GET', url, true);
-}
-
-function pubgSearch(data) {
+function initializeWindow(IGN) {
+  // set player name and image
+  $('#playerName').val(IGN);
+  // show stats
+  $('#statDisplay').fadeIn(500);
+  // create table (clear pre-existing)
+  $('#statTable').remove();
+  var statTable = $('<table>', {'id': 'statTable', 'name': 'statTable', 'class': 'statTable'});
+  // add table to div then to window
+  $('#statDisplay').append($('#tableDiv').append(statTable));
+  // hide game window
+  $('#gameSelect').css('display', 'none');
+  // set boolean
+  gameMenu = false;
 }
