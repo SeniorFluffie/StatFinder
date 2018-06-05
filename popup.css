@@ -9,7 +9,7 @@
   margin-left: 7px;
   margin-right: 7px;
   width: 550px;
-  height: 350px;
+  height: 360px;
   outline: 3px solid black;
 }
 
@@ -92,7 +92,6 @@
 
 #dotaButton {
   background-image: url("/images/icon_dota.png");
-  disabled: true;
 }
 
 #overwatchButton {
@@ -288,11 +287,11 @@
   margin-top: 15px;
   text-align: center;
   border: 1px solid black;
+  white-space: nowrap;
 }
 
 #statTable td {
   border: 1px solid black;
-  font-family: sans-serif;
   line-height: 125%;
 }
 
@@ -321,7 +320,7 @@
 }
 
 .champIcon {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   padding: 2.5px;
 }

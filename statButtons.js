@@ -32,14 +32,19 @@ $(document).on('click', '#backButton', function(event) {
 
 // if refresh is pressed
 $(document).on('click', '#refreshButton', function(event) {
+  let fadeTimer = {start: 1000, end: 2000};
   // play sound (and forward start time)
   let buttonPress = $('#buttonSound')[0];
   buttonPress.play();
   // if the game menu is disabled (bug fix)
   if(gameMenu === false) {
     // refresh animation
-    $('#tableDiv').fadeTo(1000, 0).fadeTo(2000, 1.0);
+    $('#tableDiv').fadeTo(fadeTimer.start, 0).fadeTo(fadeTimer.end, 1.0);
     // request data (using last search)
     requestData(recentSearch.IGN, recentSearch.gameData);
+    // set name
+    setTimeout(function() {
+      $('#playerName').val(recentSearch.IGN);
+    }, fadeTimer.end);
   }
 });
