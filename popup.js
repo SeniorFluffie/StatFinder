@@ -2,13 +2,13 @@
 'use strict';
 
 const API_KEYS = [
-  {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', pcOnly: false, regions: false},
-  {game: 'league', key: 'RGAPI-0ff79719-f54c-48c8-9402-fdd2f19b4fff', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', pcOnly: true, regions: false},
-  {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIifQ.LFPtLYDerMSZiDjH_DQoqTSV7TChfkvdZFkaYR_Oxxg', url : 'https://api.playbattlegrounds.com/shards/pc-na/players/<ign>', pcOnly: true, regions: true},
-  {game: 'csgo', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', pcOnly: true, regions: true},
-  {game: 'dota', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', pcOnly: true, regions: true},
-  {game: 'overwatch', key: '', url: '', pcOnly: false, regions: true},
-  {game: 'osu', key: '7460bfcb582e755d640beef05016060ac8d9c87a', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', pcOnly: true, regions: false},
+  {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', pcOnly: false, regions: false, oneView: true},
+  {game: 'league', key: 'RGAPI-7901d20b-9796-4446-b10a-6dda9ea80924', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', pcOnly: true, regions: false, oneView: true},
+  {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIifQ.LFPtLYDerMSZiDjH_DQoqTSV7TChfkvdZFkaYR_Oxxg', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', pcOnly: true, regions: true, oneView: true},
+  {game: 'csgo', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', pcOnly: true, regions: true, oneView: true},
+  {game: 'dota', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', pcOnly: true, regions: true, oneView: true},
+  {game: 'overwatch', key: '', url: '', pcOnly: false, regions: true, oneView: false},
+  {game: 'osu', key: '7460bfcb582e755d640beef05016060ac8d9c87a', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', pcOnly: true, regions: false, oneView: false},
 ]
 
 const SYSTEM_TAGS = [
@@ -58,7 +58,7 @@ function search(IGN) {
   if(gameIndex < gameButtons.length) {
     // add index property
     API_KEYS[gameIndex].gameID = gameIndex;
-    // request data from the specific game (uses callback function as a closure)
+    // request data from the specific game
     requestData(IGN, API_KEYS[gameIndex]);
   }
   // else display alert
@@ -106,12 +106,10 @@ function requestData(IGN, gameData) {
     request.setRequestHeader('Access-Control-Allow-Origin', '*');
   // instructions for when the message is recieved
   request.onreadystatechange = function() {
-    // request closure
-    let req = this;
     // handle status codes
-    requestHandler({status: req.status, readyState: req.readyState, responseText: req.responseText}, function () {
+    requestHandler(this, function () {
       // parse the data
-      let data = JSON.parse(req.responseText);
+      let data = JSON.parse(request.responseText);
       // add response
       data.key = gameData.key
       // update window
@@ -178,6 +176,11 @@ function initializeWindow() {
   $('#playerName').val($('#searchBar')[0].value);
   // clear name field
   $('#searchBar')[0].value = '';
+  // add view switch (if game has it)
+  if(recentSearch.gameData.oneView)
+    $('#viewSwitch').css('display', 'none');
+  else
+    $('#viewSwitch').css('display', 'inline');
   // show stats
   $('#statDisplay').fadeIn(500);
   // create table (clear pre-existing)

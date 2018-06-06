@@ -16,14 +16,12 @@ function fortniteSearch(data) {
 }
 
 function fortniteTable(data) {
-  console.log(data);
-  // data to retrieve data / construct table
+  // table information
   const tableCells = [
   {category: 'lifeTimeStats', stats: [8, 9, 10, 11, 7, 2, 4, 5]},
   {category: 'stats', subcategory: 'p2', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top10', 'top25']},
   {category: 'stats', subcategory: 'p10', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top5', 'top12']},
   {category: 'stats', subcategory: 'p9', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top3', 'top6']}];
-  // cell labels and flag
   const cellHeader = ['OVERALL:', 'SOLO:', 'DUO:', 'SQUADS:'];
   // retrieve table
   var statTable = $('#statTable');
@@ -31,7 +29,7 @@ function fortniteTable(data) {
   for(let i = 0; i < tableCells.length; i++) {
     // create header text
     let headerText = $('<th>', {align: 'center', colspan: tableCells[i].stats.length}).text(cellHeader[i]);
-    let headerRow = $('<tr>', {class: 'tableHeader'}).append(headerText);
+    let headerRow = $('<tr>', {class: 'tableHeader'}).append(headerText).css({'line-height': '150%'});
     // append header to table
     statTable.append(headerRow);
     // row to be added
@@ -52,7 +50,7 @@ function fortniteTable(data) {
         cellValue = $('<span>').css('font-weight', 'normal').text(data[tableCells[i].category][tableCells[i].subcategory][tableCells[i].stats[j]].value);
       }
       // append values to cell
-      tableCell = $('<td>').append(cellKey).append(cellValue);
+      tableCell = $('<td>').css({'line-height': '140%'}).append(cellKey).append(cellValue);
       // add cell to row
       tableRow.append(tableCell);
       }

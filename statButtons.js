@@ -38,13 +38,14 @@ $(document).on('click', '#refreshButton', function(event) {
   buttonPress.play();
   // if the game menu is disabled (bug fix)
   if(gameMenu === false) {
-    // refresh animation
-    $('#tableDiv').fadeTo(fadeTimer.start, 0).fadeTo(fadeTimer.end, 1.0);
-    // request data (using last search)
-    requestData(recentSearch.IGN, recentSearch.gameData);
     // set name
     setTimeout(function() {
       $('#playerName').val(recentSearch.IGN);
-    }, fadeTimer.end);
+    }, fadeTimer.start);
+    // refresh animation
+    $('#tableDiv').fadeTo(fadeTimer.start, 0).fadeTo(fadeTimer.end, 1.0);
+    $('#playerName').fadeTo(fadeTimer.start, 0).fadeTo(fadeTimer.end, 1.0);
+    // request data (using last search)
+    requestData(recentSearch.IGN, recentSearch.gameData);
   }
 });

@@ -1,11 +1,12 @@
 // for optimizations and debugging
 'use strict';
 
-const league_URLS = ['/lol/champion-mastery/v3/scores/by-summoner/<id>',
+const league_URLS = {base: 'https://na1.api.riotgames.com',
+url: ['/lol/champion-mastery/v3/scores/by-summoner/<id>',
 '/lol/champion-mastery/v3/champion-masteries/by-summoner/<id>',
-'/lol/league/v3/positions/by-summoner/<id>'];
+'/lol/league/v3/positions/by-summoner/<id>']};
 
-const realmData = {version: '8.10.1', championLoaded: false };
+const realmData = {version: '8.11.1', championLoaded: false };
 
 function setChampionList() {
   if(!realmData.championLoaded) {
@@ -16,38 +17,34 @@ function setChampionList() {
     // upon success
     request.onreadystatechange = function() {
       // if request is ready and successful
-      if(request.readyState === 4 && request.status === 200) {
+      requestHandler(this, function () {
         // save data
         realmData.championData = JSON.parse(request.responseText).data;
         // update flag
         realmData.championLoaded = true;
-      }
+      });
     };
     request.send();
   }
 }
 
 function leagueSearch(data) {
-  // promise counter
-  let domain = 'https://na1.api.riotgames.com';
   // store initial search
   let player = {id: data.id, iconID: data.profileIconId, level: data.summonerLevel};
   // iterate through all http requests
-  for(let i = 0; i < league_URLS.length; i++) {
+  for(let i = 0; i < league_URLS.url.length; i++) {
     // swap out url tag
-    let url = domain.concat(league_URLS[i].replace('<id>', player.id).concat('?api_key=' + data.key));
+    let url = league_URLS.base.concat(league_URLS.url[i].replace('<id>', player.id).concat('?api_key=' + data.key));
     // create XML request
     let request = new XMLHttpRequest();
     // open asynchronous get request
     request.open('GET', url, true);
     // instructions for when the message is recieved
     request.onreadystatechange = function() {
-      // request closure
-      let req = this;
       // handle request
-      requestHandler({status: req.status, readyState: req.readyState, responseText: req.responseText}, function () {
+      requestHandler(this, function () {
         // parse data
-        let data = JSON.parse(req.responseText);
+        let data = JSON.parse(request.responseText);
         switch(i) {
           case 0:
           player.masteryLevel = data;
@@ -67,7 +64,7 @@ function leagueSearch(data) {
           leagueData = {leagueName: data.leagueName, tier: data.tier, rank: data.rank, leaguePoints: data.leaguePoints, rankedWins: data.wins, rankedLosses: data.losses};
           // add requested properties to new object
           for (var newAttr in leagueData)
-          player[newAttr] = leagueData[newAttr];
+            player[newAttr] = leagueData[newAttr];
           break;
         }
       });
@@ -86,9 +83,8 @@ function leagueSearch(data) {
 }
 
 function leagueTable(data) {
-  // table header data
+  // table information
   const tableHeaders = ['SUMMONER', 'RANKED', 'MASTERY', 'MASTERY'];
-  // cell data
   const cellHeaders = [['Summoner ID', 'Level', 'Total Mastery'], ['League', 'Tier', 'Rank', 'LP', 'Wins', 'Losses'], ['', 'Name', 'Level', 'Points', '', 'Name', 'Level', 'Points'], ['', 'Name', 'Level', 'Points', '', 'Name', 'Level', 'Points']];
   const cellData = [{stats: ['id', 'level', 'masteryLevel']}, {stats: ['leagueName', 'tier', 'rank', 'leaguePoints', 'rankedWins', 'rankedLosses']},
   {category: 'championMastery', stats: ['', 'championId', 'championLevel', 'championPoints', '', 'championId', 'championLevel', 'championPoints']},
