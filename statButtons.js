@@ -26,7 +26,7 @@ $(document).on('click', '#backButton', function(event) {
       // deactivate
       $(this).removeClass('active');
   });
-  // disable console select
+  // disable system select
   enableConsoles(false);
 });
 

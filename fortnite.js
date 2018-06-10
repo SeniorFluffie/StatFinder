@@ -17,44 +17,24 @@ function fortniteSearch(data) {
 
 function fortniteTable(data) {
   // table information
+  const headerData = [{header: 'OVERALL:', property: ['lifeTimeStats'], index: [0]}, {header: 'SOLO:', index: [1], property: ['stats', 'p2']},
+  {header: 'DUO:', index: [2], property: ['stats', 'p10']}, {header: 'SQUADS:', index: [3], property: ['stats', 'p9']}];
+
   const tableCells = [
-  {category: 'lifeTimeStats', stats: [8, 9, 10, 11, 7, 2, 4, 5]},
-  {category: 'stats', subcategory: 'p2', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top10', 'top25']},
-  {category: 'stats', subcategory: 'p10', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top5', 'top12']},
-  {category: 'stats', subcategory: 'p9', stats: ['top1', 'winRatio', 'kills', 'kd', 'kpg', 'matches', 'top3', 'top6']}];
-  const cellHeader = ['OVERALL:', 'SOLO:', 'DUO:', 'SQUADS:'];
-  // retrieve table
-  var statTable = $('#statTable');
-  // iterate through the table
-  for(let i = 0; i < tableCells.length; i++) {
-    // create header text
-    let headerText = $('<th>', {align: 'center', colspan: tableCells[i].stats.length}).text(cellHeader[i]);
-    let headerRow = $('<tr>', {class: 'tableHeader'}).append(headerText).css({'line-height': '150%'});
-    // append header to table
-    statTable.append(headerRow);
-    // row to be added
-    let tableRow = $('<tr>');
-    // iterate through stats
-    for(let j = 0; j < tableCells[i].stats.length; j++) {
-      // cell to be added
-      let tableCell, cellKey, cellValue;
-      // if there is no sub-category (use different data)
-      if(tableCells[i].subcategory === undefined) {
-        // cell key (bolded) and cell value (not bolded)
-        cellKey = $('<span>').css({'font-weight': 'bold', 'display': 'block'}).text(data[tableCells[i].category][tableCells[i].stats[j]].key + ':');
-        cellValue = $('<span>').css('font-weight', 'normal').text(data[tableCells[i].category][tableCells[i].stats[j]].value);
-      }
-      else {
-        // cell key (bolded) and cell value (not bolded)
-        cellKey = $('<span>').css({'font-weight': 'bold', 'display': 'block'}).text(data[tableCells[i].category][tableCells[i].subcategory][tableCells[i].stats[j]].label + ':');
-        cellValue = $('<span>').css('font-weight', 'normal').text(data[tableCells[i].category][tableCells[i].subcategory][tableCells[i].stats[j]].value);
-      }
-      // append values to cell
-      tableCell = $('<td>').css({'line-height': '140%'}).append(cellKey).append(cellValue);
-      // add cell to row
-      tableRow.append(tableCell);
-      }
-      // add table row to table
-      statTable.append(tableRow);
-  }
+  [{title: 'Wins:', key: 8}, {title: 'Win %:', key: 9}, {title: 'Kills:', key: 10}, {title: 'KD:', key: 11},
+  {title: 'Matches:', key: 7}, {title: 'Top 3:', key: 2}, {title: 'Top 12:', key: 4}, {title: 'Top 25:', key: 5}],
+
+  [{title: 'Top 1:', key: 'top1'}, {title: 'Win %:', key: 'winRatio'}, {title: 'Kills:', key: 'kills'}, {title: 'KD:', key: 'kd'},
+  {title: 'KPG:', key: 'kpg'}, {title: 'Matches:', key: 'matches'}, {title: 'Top 10:', key: 'top10'}, {title: 'Top 25:', key: 'top25'}],
+
+  [{title: 'Top 1:', key: 'top1'}, {title: 'Win %:', key: 'winRatio'}, {title: 'Kills:', key: 'kills'}, {title: 'KD:', key: 'kd'},
+  {title: 'KPG:', key: 'kpg'}, {title: 'Matches:', key: 'matches'}, {title: 'Top 5:', key: 'top5'}, {title: 'Top 12:', key: 'top12'}],
+
+  [{title: 'Top 1:', key: 'top1'}, {title: 'Win %:', key: 'winRatio'}, {title: 'Kills:', key: 'kills'}, {title: 'KD:', key: 'kd'},
+  {title: 'KPG:', key: 'kpg'}, {title: 'Matches:', key: 'matches'}, {title: 'Top 3:', key: 'top3'}, {title: 'Top 6:', key: 'top6'}]];
+  // initialize table styling
+  let headerStyle = {'line-height': '150%'};
+  let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '140%'}];
+  // setup display
+  createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);
 }

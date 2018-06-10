@@ -5,9 +5,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-  <audio id = "iconSound" src = "/sound/game_press.mp3" "type = audio/mp3"> </audio>
-  <audio id = "searchSound" src = "/sound/search_press.mp3" "type = audio/mp3"> </audio>
-  <audio id = "buttonSound" src = "/sound/button_press.mp3" "type = audio/mp3"> </audio>
+  <audio id = "iconSound" src = "sound/game_press.mp3" "type = audio/mp3"> </audio>
+  <audio id = "searchSound" src = "sound/search_press.mp3" "type = audio/mp3"> </audio>
+  <audio id = "buttonSound" src = "sound/button_press.mp3" "type = audio/mp3"> </audio>
   <div class = "window standardImage" id = "gameSelect">
     <div name = "buttonGrid" id = "buttonGrid" class = "buttonGrid" data-toggle = "buttons-radio">
       <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "fortniteButton" title = "Fortnite">
@@ -17,6 +17,7 @@
       <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "dotaButton" title = "Dota 2" disabled = "true">
       <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "overwatchButton" title = "Overwatch">
       <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "osuButton" title = "osu!">
+      <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "haloButton" title = "Halo 5: Guardians">
     </div>
     <div name = "systemSelector" id = "systemSelector" class = "systemSelector" data-toggle = "buttons-radio">
       <button name = "systemButton" class = "systemButton btn btn-default gameButton standardImage" id = "pcButton" title = "PC" disabled>
@@ -25,7 +26,7 @@
     </div>
   <form onsubmit = "popup.js">
     <div class = "inputForm">
-      <input class = "searchBar" type = "text" name = "IGN" placeholder = "Please enter your In-Game-Name" id = "searchBar" autofocus>
+      <input value = "SeniorFluffie" class = "searchBar" type = "text" name = "IGN" placeholder = "Please enter your In-Game-Name" id = "searchBar" autofocus>
       <input class = "inputForm" type = "submit" value = "Search" id = "searchButton">
     </div>
   </form>
@@ -53,6 +54,7 @@
 <script src = "fortnite.js"> </script>
 <script src = "league.js"> </script>
 <script src = "pubg.js"> </script>
+<script src = "overwatch.js"> </script>
 <script src = "osu.js"> </script>
 <script src = "statHover.js"> </script>
 <script src = "popup.js"> </script>

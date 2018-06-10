@@ -59,8 +59,7 @@ function leagueSearch(data) {
           let leagueData;
           // if no rank
           if(data === undefined)
-          leagueData = {leagueName: 'N/A', tier: 'UNRANKED', rank: 'N/A', leaguePoints: '0', rankedWins: '0', rankedLosses: '0'};
-          else
+          data === undefined ? leagueData = {leagueName: 'N/A', tier: 'UNRANKED', rank: 'N/A', leaguePoints: '0', rankedWins: '0', rankedLosses: '0'} :
           leagueData = {leagueName: data.leagueName, tier: data.tier, rank: data.rank, leaguePoints: data.leaguePoints, rankedWins: data.wins, rankedLosses: data.losses};
           // add requested properties to new object
           for (var newAttr in leagueData)

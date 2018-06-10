@@ -102,6 +102,10 @@
   background-image: url("/images/icon_osu.png");
 }
 
+#haloButton {
+  background-image: url("/images/icon_halo.png");
+}
+
 .systemSelector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
