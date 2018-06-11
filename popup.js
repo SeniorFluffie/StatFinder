@@ -3,7 +3,7 @@
 
 const API_KEYS = [
   {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
-  {game: 'league', key: 'RGAPI-919e274f-d64a-4f46-80ea-6727d9299ef5', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
+  {game: 'league', key: 'RGAPI-ba0cc2bb-4cf7-4242-9f28-2ff2494edda0', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
   {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIifQ.LFPtLYDerMSZiDjH_DQoqTSV7TChfkvdZFkaYR_Oxxg', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
   {game: 'csgo', key: '', url: '', oneSystem: true, regions: true, oneView: true},
   {game: 'dota', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', oneSystem: true, regions: true, oneView: true},
@@ -236,6 +236,9 @@ function createTable(data, tableData, style) {
         property = data[header.property[header.counter++]];
       // create table row (dependant on path)
       let row = cellData[header.index[j]];
+      // to switch data mid row
+      if(header.increment !== undefined)
+        row.increment = header.increment;
       property ? createTableRow(statTable, row, property, cellStyle)
       : createTableRow(statTable, row, data, cellStyle);
     }
@@ -255,12 +258,17 @@ function createTableRow(table, data, property, css) {
   let tableRow = $('<tr>');
   // iterate through each cell
   for(let i = 0; i < data.length; i++) {
-    let cellTitle, cellValue;
-    let text = propertySearch(property, data[i].key);
+    let cellTitle, cellValue, text;
+    // increment data
+    if(data[i].increment)
+      ++data.increment;
+    // switch data mid row or regular text
+    data.increment != undefined ? text = propertySearch(property[data.increment], data[i].key)
+    : text = propertySearch(property, data[i].key);
     // cell to be added
     if(data[i].img === undefined) {
       // regular cell
-      cellTitle = $('<span>').text(data[i].title).css(css[0]);
+      cellTitle = $('<span>').css(css[0]).text(data[i].title);
       // round number (number case and string case)
       if((typeof text === 'number' && text !== 0) ||
       (typeof text === 'string' && !text.search(/^\d*\.?\d+$/)))
@@ -268,14 +276,14 @@ function createTableRow(table, data, property, css) {
       // otherwise use preset display values
       else if(text.displayValue !== undefined || text.value !== undefined)
         text.displayValue ? text = text.displayValue : text = text.value;
-      cellValue = $('<span>').text(text).css(css[1]);
+      cellValue = $('<span>').css(css[1]).text(text);
     } else {
       // image cell
       cellTitle = $('<span>').text(data[i].title).css(css[0]);
       cellValue = $('<img>', {src: text, class: 'champIcon'});
     }
     // combine elements to cell
-    let tableCell = $('<td>').append(cellTitle).append(cellValue).css(css[2]);
+    let tableCell = $('<td>').css(css[2]).append(cellTitle).append(cellValue);
     // add cell to row to table
     tableRow.append(tableCell);
   }

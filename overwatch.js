@@ -7,7 +7,7 @@ function overwatchSearch(data) {
   initializeWindow();
   // prepare data
   localizeHeroes(data);
-  simplifyData(data);
+  simplifyOverwatch(data);
   // create tables
   overwatchTable(data, 0)
 }
@@ -44,7 +44,7 @@ function compareTime(a, b) {
     return bTime - aTime;
 }
 
-function simplifyData(data) {
+function simplifyOverwatch(data) {
   const props = ['competitiveStats', 'quickPlayStats'];
   // iterate each set of stats
   for(let path of props) {

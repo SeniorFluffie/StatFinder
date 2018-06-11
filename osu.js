@@ -39,8 +39,8 @@ function retrieveMaps(url, data, prop) {
 
 function osuTable(data) {
   // table information
-  const headerData = [{header: 'USER:', index: [0, 1, 2]}, {header: '1ST TOP SCORE:', index: [3, 4], property: ['maps', '0']},
-  {header: '2ND TOP SCORE:', index: [3, 4], property: ['maps', '1']}];
+  const headerData = [{header: 'USER:', index: [0, 1, 2]}, {header: '1ST TOP SCORE:', property: ['maps', '0'], index: [3, 4]},
+  {header: '2ND TOP SCORE:', property: ['maps', '1'], index: [3, 4]}];
   const tableCells = [[{title: 'Level:', key: 'level'}, {title: 'Total Score:', key: 'total_score'}, {title: 'Ranked Score:', key: 'ranked_score'},
   {title: 'Plays:', key: 'playcount'}, {title: 'Accuracy:', key: 'accuracy'}],
 

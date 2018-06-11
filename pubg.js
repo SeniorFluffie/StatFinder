@@ -50,8 +50,8 @@ function retrieveStats(url, data, prop) {
 
 function pubgTable(data) {
   // table information
-  const headerData = [{header: 'SOLO & SOLO-FIRST-PERSON:', index: [0, 0], property: ['solo', 'solo-fpp'], counter: 0}, {header: 'DUO & DUO-FIRST-PERSON:', index: [0, 0],
-  property: ['duo', 'duo-fpp'], counter: 0}, {header: 'SQUAD & SQUAD-FIRST-PERSON:', index: [0, 0], property: ['squad', 'squad-fpp'], counter: 0}];
+  const headerData = [{header: 'SOLO & SOLO-FIRST-PERSON:', property: ['solo', 'solo-fpp'], index: [0, 0], counter: 0}, {header: 'DUO & DUO-FIRST-PERSON:',
+  property: ['duo', 'duo-fpp'], index: [0, 0], counter: 0}, {header: 'SQUAD & SQUAD-FIRST-PERSON:', property: ['squad', 'squad-fpp'], index: [0, 0], counter: 0}];
   const tableCells = [[{title: 'Wins:', key: 'wins'}, {title: 'Games:', key: 'roundsPlayed'}, {title: 'Top10:', key: 'top10s'}, {title: 'Kills', key: 'kills'},
   {title: 'Headshots:', key: 'kills'}, {title: 'Assists:', key: 'assists'}, {title: 'Damage:', key: 'damageDealt'}, {title: 'Max Kills:', key: 'roundMostKills'},
   {title: 'Longest Kill:', key: 'longestTimeSurvived'}, {title: 'Survival:', key: 'wins'}]];
