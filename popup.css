@@ -327,8 +327,12 @@
   background-color: rgb(211,211,211);
 }
 
-#statTable tr:hover {
-  background-color: white;
+#tableDiv tr:nth-child(odd):not(.tableHeader) {
+  background-color: rgb(193, 193, 193);
+}
+
+#statTable tr:hover:not(.tableHeader) {
+  background-color: white !important;
 }
 
 .tableHover {

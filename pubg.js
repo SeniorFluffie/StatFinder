@@ -19,8 +19,9 @@ function pubgSearch(data) {
     initializeWindow();
     // set icon
     $('#playerIcon').attr('src', '/images/icon_pubg.png');
-    // fill table
-    pubgTable(player);
+    // create tables
+    updateView(player, pubgTable);
+    loadView();
   }, 1000);
 }
 

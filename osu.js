@@ -15,7 +15,8 @@ function osuSearch(data) {
     // set icon
     $('#playerIcon').attr('src', '/images/avatar_osu.png');
     // fill table
-    osuTable(player);
+    updateView(player, osuTable);
+    loadView();
   }, 500);
 }
 

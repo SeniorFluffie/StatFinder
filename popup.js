@@ -3,13 +3,13 @@
 
 const API_KEYS = [
   {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
-  {game: 'league', key: 'RGAPI-ba0cc2bb-4cf7-4242-9f28-2ff2494edda0', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
+  {game: 'league', key: 'RGAPI-22e61ff2-0ce4-445d-ad3c-7dd6c50856ae', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
   {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIifQ.LFPtLYDerMSZiDjH_DQoqTSV7TChfkvdZFkaYR_Oxxg', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
   {game: 'csgo', key: '', url: '', oneSystem: true, regions: true, oneView: true},
   {game: 'dota', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', oneSystem: true, regions: true, oneView: true},
   {game: 'overwatch', key: '', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
   {game: 'osu', key: '7460bfcb582e755d640beef05016060ac8d9c87a', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
-  {game: 'halo', key: '', url: '', oneSystem: true, regions: false, oneView: true}
+  {game: 'halo', key: '781dc5e72caa4a9f8af62eafe000cc53', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
 ];
 
 const SYSTEM_TAGS = [
@@ -94,29 +94,38 @@ function requestData(IGN, gameData) {
   let request = new XMLHttpRequest();
   // open asynchronous get request
   request.open('GET', url, true);
-  // specific game options
-  if(gameData.game === 'fortnite')
-    request.setRequestHeader('TRN-Api-Key', gameData.key);
-  else if(gameData.game === 'pubg') {
-    request.setRequestHeader("Accept", "application/vnd.api+json");
-    request.setRequestHeader("Authorization", "Bearer <key>".replace("<key>", gameData.key));
-  }
-  else if(gameData.game === 'osu')
-    request.setRequestHeader('Access-Control-Allow-Origin', '*');
+  setHeader(gameData, request);
   // instructions for when the message is recieved
   request.onreadystatechange = function() {
     // handle status codes
     requestHandler(this, function () {
       // parse the data
       let data = JSON.parse(request.responseText);
-      // add response
-      data.key = gameData.key
+      // add response (for sending headers)
+      data = Object.assign({key: gameData.key, game: gameData.game, hasLoaded: false}, data);
+      console.log(data);
       // update window
       updatePopup(data, gameData.gameID);
     });
   }
   // send get request
   request.send();
+}
+
+function setHeader(data, request) {
+  // specific options (for each game)
+  if(data.game === 'fortnite')
+    request.setRequestHeader('TRN-Api-Key', data.key);
+  else if(data.game === 'pubg') {
+    request.setRequestHeader("Accept", "application/vnd.api+json");
+    request.setRequestHeader("Authorization", "Bearer <key>".replace("<key>", data.key));
+  }
+  else if(data.game === 'osu')
+    request.setRequestHeader('Access-Control-Allow-Origin', '*');
+  else if(data.game === 'halo') {
+    request.setRequestHeader('Ocp-Apim-Subscription-Key', data.key);
+    request.setRequestHeader('Access-Control-Allow-Origin', '*');
+  }
 }
 
 function requestHandler(request, success) {
@@ -167,7 +176,45 @@ function updatePopup(data, gameID) {
     case 6:
     osuSearch(data);
     break;
+    case 7:
+    haloSearch(data);
+    break;
   }
+}
+
+function getMetaData(data, url, property) {
+  // only occur once
+  if(!data.hasLoaded || data.reload) {
+    // iterate all meta urls
+    for(let address of url) {
+      // create req and url
+      let request = new XMLHttpRequest();
+      let url = address.url;
+      request.open('GET', url, true);
+      // set header
+      setHeader(data, request);
+      // upon success
+      request.onreadystatechange = function() {
+        requestHandler(this, function() {
+          // save request to data
+          let parse = JSON.parse(request.responseText);
+          // either whole object or property
+          property ? data[address.key] = parse[property] : data[address.key] = parse;
+        });
+      }
+    // send header
+    request.send();
+    }
+  // update flag
+  data.hasLoaded = true;
+  }
+}
+
+function objectSearch(property, array, key) {
+  // search for a specific object
+  return Object.values(array).find(function (obj) {
+    return obj[key] == property;
+  });
 }
 
 function initializeWindow() {
@@ -188,7 +235,10 @@ function initializeWindow() {
 }
 
 function propertySearch(object, prop) {
-  // base case
+  // base case 1
+  if(object === null)
+    return undefined;
+  // base case 2
   if(object.hasOwnProperty(prop) || object[prop] !== undefined)
   	return object[prop];
   // else iterate through all properties
@@ -202,7 +252,25 @@ function propertySearch(object, prop) {
     if(match != undefined && !(match instanceof Object))
       return match;
   }
-  return null;
+  return undefined;
+}
+
+
+function updateView(data, func, counter) {
+  // store data
+  recentSearch.data = data;
+  recentSearch.func = func;
+  recentSearch.counter = counter;
+}
+
+function loadView(switchView) {
+  // normal view
+  if(recentSearch.counter === undefined)
+    recentSearch.func(recentSearch.data, 0);
+  else
+    // either increment or normal
+    switchView ? recentSearch.func(recentSearch.data, ++recentSearch.counter.value % recentSearch.counter.mod)
+    : recentSearch.func(recentSearch.data, recentSearch.counter.value % recentSearch.counter.mod);
 }
 
 function createTable(data, tableData, style) {
@@ -239,8 +307,11 @@ function createTable(data, tableData, style) {
       // to switch data mid row
       if(header.increment !== undefined)
         row.increment = header.increment;
+      // use specific path or whole object
       property ? createTableRow(statTable, row, property, cellStyle)
       : createTableRow(statTable, row, data, cellStyle);
+      // update increment value
+      header.increment = row.increment;
     }
   }
 }
@@ -265,14 +336,18 @@ function createTableRow(table, data, property, css) {
     // switch data mid row or regular text
     data.increment != undefined ? text = propertySearch(property[data.increment], data[i].key)
     : text = propertySearch(property, data[i].key);
+    if(text == undefined)
+      text = 'N/A';
     // cell to be added
     if(data[i].img === undefined) {
       // regular cell
       cellTitle = $('<span>').css(css[0]).text(data[i].title);
-      // round number (number case and string case)
-      if((typeof text === 'number' && text !== 0) ||
-      (typeof text === 'string' && !text.search(/^\d*\.?\d+$/)))
+      // round number
+      if(numberCheck(text))
         text = Math.round(text * 100) / 100;
+      // capitalize first letter of word
+      else if(lowerCheck(text))
+        text = capitalizeFirst(text);
       // otherwise use preset display values
       else if(text.displayValue !== undefined || text.value !== undefined)
         text.displayValue ? text = text.displayValue : text = text.value;
@@ -280,7 +355,7 @@ function createTableRow(table, data, property, css) {
     } else {
       // image cell
       cellTitle = $('<span>').text(data[i].title).css(css[0]);
-      cellValue = $('<img>', {src: text, class: 'champIcon'});
+      cellValue = $('<img>', {src: text, class: 'champIcon', title: ''});
     }
     // combine elements to cell
     let tableCell = $('<td>').css(css[2]).append(cellTitle).append(cellValue);
@@ -289,4 +364,18 @@ function createTableRow(table, data, property, css) {
   }
   // add table row to table
   table.append(tableRow);
+}
+
+function numberCheck(number) {
+  // either a number thats not null or string containing only numbers
+  return (typeof number === 'number' && number !== 0)
+  || (typeof number === 'string' && !number.search(/^\d*\.?\d+$/))
+}
+
+function lowerCheck(string) {
+  return typeof string === 'string' && !string.search(/^[a-z]/);
+}
+
+function capitalizeFirst(string) {
+  return string = string.charAt(0).toUpperCase() + string.slice(1);
 }

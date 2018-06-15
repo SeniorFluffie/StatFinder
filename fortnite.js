@@ -10,8 +10,9 @@ function fortniteSearch(data) {
     initializeWindow();
     // set icon
     $('#playerIcon').attr('src', '/images/avatar_fortnite.png');
-    // setup table
-    fortniteTable(data);
+    // create tables
+    updateView(data, fortniteTable);
+    loadView();
   }
 }
 

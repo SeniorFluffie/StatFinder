@@ -9,7 +9,7 @@
     "persistent": false
   },
 
-  "permissions": ["activeTab", "declarativeContent", "storage", "https://na1.api.riotgames.com/*", "https://api.fortnitetracker.com/*", "http://ddragon.leagueoflegends.com/*", "https://osu.ppy.sh/api/*"],
+  "permissions": ["activeTab", "declarativeContent", "storage", "https://na1.api.riotgames.com/*", "https://api.fortnitetracker.com/*", "http://ddragon.leagueoflegends.com/*", "https://osu.ppy.sh/api/*", "https://image.halocdn.com/*", "https://www.haloapi.com/*"],
 
   "browser_action": {
     "default_title": "StatFinder",

@@ -1,6 +1,8 @@
 // for optimizations and debugging
 'use strict';
 
+let overwatchCounter = {value: 0, mod: 2};
+
 function overwatchSearch(data) {
   // setup window
   $('#playerIcon').attr('src', data.icon);
@@ -9,7 +11,8 @@ function overwatchSearch(data) {
   localizeHeroes(data);
   simplifyOverwatch(data);
   // create tables
-  overwatchTable(data, 0)
+  updateView(data, overwatchTable, overwatchCounter);
+  loadView(false);
 }
 
 function localizeHeroes(data) {
@@ -68,20 +71,20 @@ function addOverwatchCareer(data, tableNum) {
   let headerData, tableCells, headerStyle, cellStyle;
   // if quickplay table
   if(tableNum === 0)  {
-    headerData = [{header: ['CAREER STATS:'], index: [[0]]}];
+    headerData = [{header: ['CAREER STATS:'], index: [0]}];
     tableCells = [[{title: '', key: 'levelIcon', img: true}, {title: 'Level:', key: 'level'}, {title: '', key: 'prestigeIcon', img: true},
     {title: 'Prestige:', key: 'prestige'}, {title: '', key: 'ratingIcon', img: true}, {title: 'Rank:', key: 'ratingName'}, {title: 'Value:', key: 'rating'}]];
     headerStyle = {'line-height': '105%'};
-    cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '110%', 'font-size': '10pt'}];
+    cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '130%', 'font-size': '10pt'}];
   }
   // else competitive table
   else if(tableNum === 1) {
     // table information
-    headerData = [{header: ['TOP COMPETITIVE STATS:'], property: ['competitiveStats'], index: [[0, 0, 0]]}];
-    tableCells = [[{title: 'Name', key: 'name'}, {title: 'Time:', key: 'timePlayed'}, {title: 'Wins', key: 'gamesWon'}, {title: 'Win %:', key: 'winPercentage'},
+    headerData = [{header: ['TOP COMPETITIVE STATS:'], property: ['topHeroes'], index: [0, 0, 0], increment: -1}];
+    tableCells = [[{title: 'Name', key: 'name', increment: true}, {title: 'Time:', key: 'timePlayed'}, {title: 'Wins', key: 'gamesWon'}, {title: 'Win %:', key: 'winPercentage'},
     {title: 'Elims Per Life', key: 'eliminationsPerLife'}, {title: 'Weapon Accuracy:', key: 'weaponAccuracy'}, {title: 'Objective Kills:', key: 'objectiveKillsAvg'}]];
-    headerStyle = {'line-height': '105%'};
-    cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '125%', 'font-size': '9pt'}];
+    headerStyle = {'line-height': '100%'};
+    cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '115%', 'font-size': '8pt'}];
   }
   // setup display
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);
@@ -111,7 +114,10 @@ function addOverwatchStats(data, headerNum) {
   {title: 'Most OA:', key: 'offensiveAssistsMostInGame'}]];
   // initialize table styling
   let headerStyle = {'line-height': '105%'};
-  let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '125%', 'font-size': '9pt'}];
+  let fontSize, lineHeight;
+  headerNum === 1 ? fontSize = '8pt' : fontSize = '9pt';
+  headerNum === 1 ? lineHeight = '115%' : lineHeight = '125%';
+  let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': lineHeight, 'font-size': fontSize}];
   // setup display
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);
 }
