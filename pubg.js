@@ -12,7 +12,7 @@ function pubgSearch(data) {
   // retrieve seasonal data (using the retrieved data)
   setTimeout(function() {
     retrieveStats(pubg_URLS.url[1], player, 'stats');
-  }, 500);
+  }, timeout.short);
   // after reqs are recieved
   setTimeout(function() {
     // setup window
@@ -22,7 +22,7 @@ function pubgSearch(data) {
     // create tables
     updateView(player, pubgTable);
     loadView();
-  }, 1000);
+  }, timeout.long);
 }
 
 function retrieveStats(url, data, prop) {

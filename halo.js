@@ -28,7 +28,7 @@ function haloSearch(data) {
     // create tables
     updateView(data, haloTable, haloCounter);
     loadView();
-  }, 750);
+  }, timeout.medium);
 }
 
 function getHaloData(data) {

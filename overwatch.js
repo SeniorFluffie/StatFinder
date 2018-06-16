@@ -16,7 +16,6 @@ function overwatchSearch(data) {
 }
 
 function localizeHeroes(data) {
-  let heroesDisplayed = 3;
   // get hero data
   let topHeroes = data.competitiveStats.topHeroes;
   // save name to each object
@@ -26,6 +25,7 @@ function localizeHeroes(data) {
   topHeroes = Object.keys(topHeroes).map(i => topHeroes[i]);
   topHeroes.sort(compareTime);
   // take top few indices
+  let heroesDisplayed = 3;
   data.topHeroes = topHeroes.slice(0, heroesDisplayed);
 }
 

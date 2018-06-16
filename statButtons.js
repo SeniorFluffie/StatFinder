@@ -24,7 +24,7 @@ $(document).on('click', '#backButton', function(event) {
       // display game window after animation
       $('#gameSelect').css('display', 'inline-block');
     });
-  }, 500);
+  }, timeout.short);
   // set flag
   gameMenu = true;
   // go through each game button

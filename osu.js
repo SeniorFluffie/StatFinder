@@ -17,7 +17,7 @@ function osuSearch(data) {
     // fill table
     updateView(player, osuTable);
     loadView();
-  }, 500);
+  }, timeout.short);
 }
 
 function retrieveMaps(url, data, prop) {

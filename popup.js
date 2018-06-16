@@ -16,6 +16,8 @@ const SYSTEM_TAGS = [
   'pc', 'psn', 'xb1'
 ];
 
+const timeout = {short: 500, medium: 750, long: 1000};
+
 window.onload = function() {
   // player search
   let searchButton = $('#searchButton')[0];
@@ -103,7 +105,7 @@ function requestData(IGN, gameData) {
       let data = JSON.parse(request.responseText);
       // general error check
       if(data.error !== undefined || data === undefined || data.length === 0)
-        alert('Player not found!');
+        alert('Error 404! User Not Found!');
       else {
         // add response (for sending headers)
         data = Object.assign({key: gameData.key, game: gameData.game, hasLoaded: false}, data);
@@ -141,17 +143,17 @@ function requestHandler(request, success) {
       success();
     }
     // else display the error code
-    else if(status === 400)
+    else if(request.status === 400)
     alert('Error 400! Bad Search Request!');
-    else if(status === 401)
+    else if(request.status === 401)
     alert('Error 401! Unauthorized Request!');
-    else if(status === 403)
+    else if(request.status === 403)
     alert('Error 403! Forbidden Request!');
-    else if(status === 404)
-    alert('Error 404! Request Not Found!');
-    else if(status === 500)
+    else if(request.status === 404)
+    alert('Error 404! User Not Found!');
+    else if(request.status === 500)
     alert('Error 500! Internal Server Error!');
-    else if( status === 503)
+    else if(request.status === 503)
     alert('Error 503! Service Unavailable!');
   }
 }
