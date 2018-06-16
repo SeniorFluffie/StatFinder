@@ -28,7 +28,7 @@ function haloSearch(data) {
     // create tables
     updateView(data, haloTable, haloCounter);
     loadView();
-  }, 1000);
+  }, 750);
 }
 
 function getHaloData(data) {
@@ -45,7 +45,6 @@ function getHaloData(data) {
     request.onreadystatechange = function() {
       // handle request
       requestHandler(this, function () {
-        console.log(url.img);
         // parse data
         let parse = url.img ? request.responseURL : JSON.parse(request.responseText).Results;
         data[url.key] = parse;
@@ -83,7 +82,7 @@ function simplifyHalo(data) {
 
 function haloTable(data, tableNum) {
   // show specific table
-  tableNum === 1 ? addHaloStats(data, tableNum) :  addHaloCareer(data, tableNum);
+  tableNum === 0 ? addHaloStats(data, tableNum) :  addHaloCareer(data, tableNum);
 }
 
 function addHaloStats(data) {

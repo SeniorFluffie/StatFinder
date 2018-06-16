@@ -3,7 +3,7 @@
 
 const API_KEYS = [
   {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
-  {game: 'league', key: 'RGAPI-22e61ff2-0ce4-445d-ad3c-7dd6c50856ae', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
+  {game: 'league', key: 'RGAPI-57e0e894-2dec-44f1-91f0-b6c289eb16f8', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
   {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIifQ.LFPtLYDerMSZiDjH_DQoqTSV7TChfkvdZFkaYR_Oxxg', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
   {game: 'csgo', key: '', url: '', oneSystem: true, regions: true, oneView: true},
   {game: 'dota', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', oneSystem: true, regions: true, oneView: true},
@@ -101,11 +101,15 @@ function requestData(IGN, gameData) {
     requestHandler(this, function () {
       // parse the data
       let data = JSON.parse(request.responseText);
-      // add response (for sending headers)
-      data = Object.assign({key: gameData.key, game: gameData.game, hasLoaded: false}, data);
-      console.log(data);
-      // update window
-      updatePopup(data, gameData.gameID);
+      // general error check
+      if(data.error !== undefined || data === undefined || data.length === 0)
+        alert('Player not found!');
+      else {
+        // add response (for sending headers)
+        data = Object.assign({key: gameData.key, game: gameData.game, hasLoaded: false}, data);
+        // update window
+        updatePopup(data, gameData.gameID);
+      }
     });
   }
   // send get request
@@ -132,8 +136,8 @@ function requestHandler(request, success) {
   if(request.readyState === 4) {
     // if success
     if(request.status === 200) {
-      console.log('Code 200! Request Successful!');
       // run function
+      console.log('Code 200! Request Successful!');
       success();
     }
     // else display the error code
@@ -232,6 +236,8 @@ function initializeWindow() {
   $('#gameSelect').css('display', 'none');
   // set boolean
   gameMenu = false;
+  // enable timer
+  refreshTimer.timer = setInterval(incrementTimer, refreshTimer.timeout);
 }
 
 function propertySearch(object, prop) {
@@ -353,9 +359,11 @@ function createTableRow(table, data, property, css) {
         text.displayValue ? text = text.displayValue : text = text.value;
       cellValue = $('<span>').css(css[1]).text(text);
     } else {
-      // image cell
+      // set title of image
+      let title = data[i].imgTitle ? propertySearch(property[data.increment], data[i].imgTitle) : '';
+      // image table cell
       cellTitle = $('<span>').text(data[i].title).css(css[0]);
-      cellValue = $('<img>', {src: text, class: 'champIcon', title: ''});
+      cellValue = $('<img>', {src: text, class: 'champIcon', title: title});
     }
     // combine elements to cell
     let tableCell = $('<td>').css(css[2]).append(cellTitle).append(cellValue);

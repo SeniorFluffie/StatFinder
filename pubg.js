@@ -57,9 +57,9 @@ function pubgTable(data) {
   {title: 'Headshots:', key: 'kills'}, {title: 'Assists:', key: 'assists'}, {title: 'Damage:', key: 'damageDealt'}, {title: 'Max Kills:', key: 'roundMostKills'},
   {title: 'Longest Kill:', key: 'longestTimeSurvived'}, {title: 'Survival:', key: 'wins'}]];
   // initialize table styling
-  let headerStyle = {'line-height': '105%'};
+  let headerStyle = {'line-height': '125%'};
   let cellStyle = [{'font-weight': 'bold', 'display': 'block', 'font-size': '8pt'}, {'font-weight': 'normal', 'font-size': '9pt'},
-  {'line-height': '100%'}];
+  {'line-height': '110%'}];
   // setup display
   data = data.stats;
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);

@@ -2,18 +2,13 @@
 'use strict';
 
 function fortniteSearch(data) {
-  // check for errors
-  if(data.error !== undefined)
-    alert('Player not found!');
-  else {
-    // setup window / icon / table
-    initializeWindow();
-    // set icon
-    $('#playerIcon').attr('src', '/images/avatar_fortnite.png');
-    // create tables
-    updateView(data, fortniteTable);
-    loadView();
-  }
+  // setup window / icon / table
+  initializeWindow();
+  // set icon
+  $('#playerIcon').attr('src', '/images/avatar_fortnite.png');
+  // create tables
+  updateView(data, fortniteTable);
+  loadView();
 }
 
 function fortniteTable(data) {
