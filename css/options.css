@@ -1,0 +1,165 @@
+body, div, span, h1, h2, p, img,
+label, table, tr, th, td, section {
+	vertical-align: baseline;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	font-family: Helvetica;
+	font-size: 100%;
+	font-weight: inherit;
+}
+
+#sidebar {
+	position: absolute;
+	width: 220px;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	background-color: rgb(237,237,237);
+	border-right: 1px solid rgb(194,194,194);
+	text-shadow: rgb(245,245,245) 0px 1px 0px;
+}
+
+#sidebar h1 {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	color: rgb(112,112,112);
+	font-size: 26px;
+}
+
+#logo {
+	position: absolute;
+	height: 30px;
+	width: 30px;
+	top: 12px;
+	left: 12px;
+}
+
+hr {
+	border-color: rgb(192, 192, 192);
+	border-style: dashed;
+	border-width: 0.5px;
+}
+
+#tab-list {
+	position: absolute;
+	top: 50px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	text-align: right;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#tab-list .tab {
+	padding-right: 25px;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+	height: 28px;
+	color: rgb(128,128,128);
+	font-size: 12px;
+	line-height: 28px;
+	cursor: pointer;
+}
+
+#tab-list .tab.active {
+	background-color: rgb(212,212,212);
+	border-color: rgb(191,191,191);
+	color: black;
+	text-shadow: rgb(219,219,219) 0px 1px 0px;
+	box-shadow: inset -12px 0 30px -30px black;
+}
+
+body.tab.active {
+	background-color: transparent;
+	border-color: transparent;
+	color: rgb(128,128,128);
+	box-shadow: none;
+	text-shadow: inherit;
+}
+
+#content {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 220px;
+	overflow: auto;
+}
+
+.tab-content {
+	position: absolute;
+	width: 840px;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	padding: 20px;
+	padding-top: 15px;
+}
+
+.tab-content h2 {
+	margin: 0px;
+	padding-bottom: 5px;
+	color: rgb(112,112,112);
+	font-size: 26px;
+	line-height: 1;
+}
+
+table {
+	vertical-align: middle;
+	border-collapse: separate;
+	border-spacing: 0px;
+	margin-bottom: 1.4em;
+}
+
+th, td {
+	vertical-align: middle;
+	text-align: left;
+}
+
+.option.section {
+	margin-top: 10px;
+	padding-top: 5px;
+	padding-left: 2px;
+	border-top: 1px solid rgb(238,238,238);
+}
+
+.option.header {
+	vertical-align: top;
+	width: 140px;
+	padding: 0px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.option.setting {
+	max-width: 600px;
+	margin-bottom: 5px;
+}
+
+.option.label {
+	margin-right: 15px;
+	font-size: 13px;
+	font-weight: normal;
+}
+
+.option.slider.bar {
+	position: relative;
+	width: 150px;
+	top: 6px;
+}
+
+.option.slider-text {
+	margin-left: 5px;
+	color: rgb(102,102,102);
+}
+
+.option.checkbox.label {
+	display: inline-block;
+	position: relative;
+	top: -2px;
+	margin-right: 0px;
+	margin-left: 5px;
+}

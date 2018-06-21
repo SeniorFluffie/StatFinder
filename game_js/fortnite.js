@@ -5,7 +5,7 @@ function fortniteSearch(data) {
   // setup window / icon / table
   initializeWindow();
   // set icon
-  $('#playerIcon').attr('src', '/images/avatar_fortnite.png');
+  $('#playerIcon').prop('src', '/images/avatar_fortnite.png');
   // create tables
   updateView(data, fortniteTable);
   loadView();

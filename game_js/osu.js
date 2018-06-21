@@ -13,7 +13,7 @@ function osuSearch(data) {
     // setup window
     initializeWindow();
     // set icon
-    $('#playerIcon').attr('src', '/images/avatar_osu.png');
+    $('#playerIcon').prop('src', '/images/avatar_osu.png');
     // fill table
     updateView(player, osuTable);
     loadView();

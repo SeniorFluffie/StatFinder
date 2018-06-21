@@ -2,18 +2,13 @@
   "name": "StatFinder",
   "version": "1.0",
   "description": "A simple yet sleek API for finding video game stats!",
-  "options_page": "options.html",
-
-  "background": {
-    "scripts": ["popup.js"],
-    "persistent": false
-  },
+  "options_page": "html/options.html",
 
   "permissions": ["activeTab", "declarativeContent", "storage", "https://na1.api.riotgames.com/*", "https://api.fortnitetracker.com/*", "http://ddragon.leagueoflegends.com/*", "https://osu.ppy.sh/api/*", "https://image.halocdn.com/*", "https://www.haloapi.com/*"],
 
   "browser_action": {
     "default_title": "StatFinder",
-    "default_popup": "popup.html",
+    "default_popup": "html/popup.html",
     "default_icon": {
       "16": "images/icon_statFind16.png",
       "32": "images/icon_statFind32.png",

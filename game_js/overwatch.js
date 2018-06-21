@@ -5,7 +5,7 @@ let overwatchCounter = {value: 0, mod: 2};
 
 function overwatchSearch(data) {
   // setup window
-  $('#playerIcon').attr('src', data.icon);
+  $('#playerIcon').prop('src', data.icon);
   initializeWindow();
   // prepare data
   localizeHeroes(data);
@@ -72,7 +72,7 @@ function addOverwatchCareer(data, tableNum) {
   // if quickplay table
   if(tableNum === 0)  {
     headerData = [{header: ['CAREER STATS:'], index: [0]}];
-    tableCells = [[{title: '', key: 'levelIcon', img: true}, {title: 'Level:', key: 'level'}, {title: '', key: 'prestigeIcon', img: true},
+    tableCells = [[{title: '', key: 'levelIcon', img: true}, {title: '', key: 'prestigeIcon', img: true}, {title: 'Level:', key: 'level'},
     {title: 'Prestige:', key: 'prestige'}, {title: '', key: 'ratingIcon', img: true}, {title: 'Rank:', key: 'ratingName'}, {title: 'Value:', key: 'rating'}]];
     headerStyle = {'line-height': '105%'};
     cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '130%', 'font-size': '10pt'}];

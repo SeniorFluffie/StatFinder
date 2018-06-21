@@ -1,0 +1,350 @@
+.standardImage {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.window {
+	margin: 5px;
+	margin-left: 7px;
+	margin-right: 7px;
+	width: 550px;
+	height: 360px;
+	outline: 3px solid black;
+}
+
+#gameSelect {
+	display: inline-block;
+	background-image: url("/images/background_gameSelect.png");
+}
+
+#statDisplay {
+	display: none;
+	background-image: url("/images/background_statDisplay.png");
+}
+
+.buttonGrid {
+	display: grid;
+	margin-left: 15px;
+	margin-right: 15px;
+	padding-top: 10px;
+	grid-template-columns: repeat(6, 1fr);
+	align-items: center;
+	justify-items: center;
+}
+
+.gameButton {
+	margin: 15px;
+	margin-top: 7.5px;
+	margin-bottom: 7.5px;
+	width: 50px;
+	height: 50px;
+	border: 1px solid gray;
+	border-radius: 5px;
+	opacity: 0.75;
+	transition: 0.4s;
+	background-color: rgb(192,192,192);
+}
+
+.gameButton:hover {
+	opacity: 1;
+	background-color: rgb(255,255,255) !important;
+	animation: spin 1000ms infinite ease-out 300ms forwards;
+}
+
+.gameButton.active {
+	opacity: 1 !important;
+	animation: grow 400ms 1 linear forwards;
+	background-color: rgb(255,255,255);
+}
+
+@keyframes grow {
+	100% {
+		transform: scale(1.25) rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+#fortnite {
+	background-image: url("/images/icon_fortnite.png");
+}
+
+#league {
+	background-image: url("/images/icon_league.png");
+}
+
+#league {
+	background-image: url("/images/icon_league.png");
+}
+
+#pubg {
+	background-image: url("/images/icon_pubg.png");
+}
+
+#csgo {
+	background-image: url("/images/icon_csgo.png");
+}
+
+#dota {
+	background-image: url("/images/icon_dota.png");
+	cursor: not-allowed;
+}
+
+#overwatch {
+	background-image: url("/images/icon_overwatch.png");
+}
+
+#osu {
+	background-image: url("/images/icon_osu.png");
+}
+
+#halo {
+	background-image: url("/images/icon_halo.png");
+}
+
+#systemSelector {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	width: 240px;
+	height: 80px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	outline: 1px dashed black;
+	background-color: rgb(255,255,255,0.5);
+	align-items: center;
+}
+
+.systemButton {
+	border-radius: 30px !important;
+	border: 1px solid black !important;
+	opacity: 0.5 !important;
+}
+
+#pc {
+	background-image: url("/images/icon_pc.png");
+}
+
+#ps4 {
+	background-image: url("/images/icon_ps4.png");
+}
+
+#xbox {
+	background-image: url("/images/icon_xbox.png");
+}
+
+.inputForm {
+	display: block;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 5px;
+	width: 450px;
+	height: 100px;
+	text-align: center;
+}
+
+#searchBar {
+	width: 435px;
+	height: 35px;
+	font-size: 24px;
+	text-align: center;
+	color: rgb(105,105,105,0.85);
+	transition: 0.5s;
+	border-radius: 8px;
+	border: 1px solid grey;
+}
+
+#searchBar:focus {
+	color: rgb(0,0,0,1);
+}
+
+#searchButton {
+	width: 200px;
+	height: 45px;
+	font-size: 28px;
+	background: rgb(193,193,193);
+	box-shadow: inset 0px 0px 5px rgb(0,0,0);
+}
+
+#searchButton:hover {
+	background: rgb(229, 229, 229);
+	box-shadow: inset 0px 0px 5px rgb(193,193,193);
+	outline: none;
+}
+
+#searchButton:active {
+	background: rgb(128,128,128);
+	box-shadow: inset 0px 0px 5px orange;
+	outline: none;
+}
+
+#statBanner {
+	display: inline-block;
+	margin-top: 5px;
+	margin-left: 15px;
+	margin-right: 5px;
+	height: 80px;
+	width: 520px;
+	border: 1px dashed black;
+	vertical-align: middle;
+	padding: 1.5%;
+	background-color: rgb(255,255,255,0.4);
+}
+
+#playerIcon {
+	position: relative;
+	vertical-align: middle;
+	width: 60px;
+	height: 60px;
+	margin-left: 10px;
+	margin-right: 5px;
+	border-radius: 30px;
+	border: 1px solid black;
+	background-color: rgb(255,255,255,0.6);
+}
+
+#playerIcon:hover {
+	background-color: rgb(255,255,255,0.8);
+}
+
+@font-face {
+	font-family: PatuaOne;
+	src: url("/fonts/PatuaOne-Regular.otf");
+}
+
+#centerButtons {
+	position: relative;
+	display: inline-block;
+	width: 320px;
+	height: 64px;
+	vertical-align: middle;
+}
+
+#playerName {
+	width: 290px;
+	height: 30px;
+	margin-left: 15px;
+	margin-right: 15px;
+	vertical-align: middle;
+	border-radius: 4px;
+	border: 1px solid green;
+	background-color: rgb(230,230,230,0.7);
+	color: black;
+	font-size: 20px;
+	font-family: PatuaOne;
+	text-align: center;
+}
+
+#viewSwitch {
+	width: 160px;
+	height: 24px;
+	margin-top: 4px;
+	margin-left: 80px;
+	margin-right: 80px;
+	font-family: McLaren;
+	font-weight: bold;
+	color: rgb(255,80,0);
+}
+
+#playerName:hover {
+	background-color: rgb(230,230,230,0.9);
+}
+
+@font-face {
+	font-family: McLaren;
+	src: url("/fonts/McLaren-Regular.ttf");
+}
+
+#statButtons {
+	position: fixed;
+	display: inline-block;
+	width: 90px;
+	height: 65px;
+	vertical-align: middle;
+	margin-left: 10px;
+	margin-right: 5px;
+	border-radius: 3px;
+	border: 1px solid green;
+	background-color: rgb(255,255,255,0.6);
+	font-family: McLaren;
+	font-size: 12px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#backButton {
+	margin-top: 5px;
+	height: 25px;
+	width: 50px;
+	color: rgb(220,20,60);
+}
+
+#refreshButton {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	height: 25px;
+	width: 75px;
+	color: green;
+}
+
+@font-face {
+	font-family: GoodTime;
+	src: url("/fonts/GoodTimeGrotesk.otf");
+}
+
+#statTable {
+	width: 95%;
+	height: 10%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	text-align: center;
+	border: 1px solid black;
+	white-space: nowrap;
+}
+
+#statTable td {
+	border: 1px solid black;
+	line-height: 125%;
+}
+
+#statTable th {
+	color: white;
+	text-align: center;
+	font-weight: bold;
+	font-size: 14px;
+	font-family: GoodTime;
+}
+
+#statTable tr {
+	background-color: rgb(211,211,211);
+}
+
+#tableDiv tr:nth-child(odd):not(.tableHeader) {
+	background-color: rgb(193,193,193);
+}
+
+#statTable tr:hover:not(.tableHeader) {
+	background-color: white !important;
+}
+
+.tableHover {
+	background-color: rgb(31,188,31) !important;
+}
+
+.tableHeader {
+	background-color: green !important;
+}
+
+.cellIcon {
+	width: 40px;
+	height: 40px;
+	padding: 2.5px;
+}

@@ -104,7 +104,7 @@ function addHaloStats(data) {
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '180%', 'font-size': '9pt'}];
   let headerStyle = {'line-height': '165%'};
   // set icon
-  $('#playerIcon').attr('src', propertySearch(data, 'SpartanImg'));
+  $('#playerIcon').prop('src', propertySearch(data, 'SpartanImg'));
   // setup display
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);
 }
@@ -126,7 +126,7 @@ function addHaloCareer(data) {
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '150%', 'font-size': '9pt'}];
   let headerStyle = {'line-height': '135%'};
   // set icon
-  $('#playerIcon').attr('src', propertySearch(data, 'SpartanImg'));
+  $('#playerIcon').prop('src', propertySearch(data, 'SpartanImg'));
   // setup display
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);
 }

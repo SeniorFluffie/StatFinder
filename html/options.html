@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> StatFinder Options </title>
+    <link rel = "stylesheet" href = "/css/options.css" media = "screen">
+  </head>
+  <body>
+    <div id = "sidebar">
+      <img id = "logo" src = "/images/icon_statFind128.png" alt = "Logo">
+      <h1> Options </h1>
+      <div id = "tab-list">
+        <hr>
+        <div class = "tab active" name = "information"> Information </div>
+        <div class = "tab" name = "sound"> Sound </div>
+      </div>
+    </div>
+    <div id = "content">
+      <div class = "tab-content" name = "information" active>
+        <h2> Information </h2>
+        <table class = "option section">
+          <tr>
+            <td class = "option header"> Search Defaults </td>
+          </tr>
+          <tr> <td> </td>
+            <td>
+              <div class = "option setting">
+                <label class = "option label"> In-Game Name: </label>
+                <input id = "ign" class = "option" type = "text" placeholder = "Please Enter Your IGN">
+              </div>
+              <div class = "option setting">
+                <label class = "option label"> Game: </label>
+                <select id = "game">
+                  <option value = "" selected> Please Select a Game </option>
+                  <option value = "fortnite"> Fortnite </option>
+                  <option value = "league"> League of Legends </option>
+                  <option value = "pubg"> PLAYERUNKNOWN'S BATTLEGROUNDS </option>
+                  <option value = "csgo" disabled> Counter Strike: Global Offensive </option>
+                  <option value = "dota" disabled> Dota 2 </option>
+                  <option value = "overwatch" disabled> Overwatch </option>
+                  <option value = "osu"> osu! </option>
+                  <option value = "halo"> Halo 5: Guardians </option>
+                </select>
+              </div>
+              <div class = "option setting">
+                <label class = "option label"> System: </label>
+                <select id = "system">
+                  <option value = "" selected> Please Select a System </option>
+                  <option value = "pc"> PC </option>
+                  <option value = "psn"> PlayStation 4 </option>
+                  <option value = "xbox"> Xbox One </option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class = "option section">
+          <tr>
+            <td class = "option header"> Contact Information </td>
+          </tr> <tr>
+            <td></td> <td>
+              <p> <a href = " https://github.com/SeniorFluffie/StatFinder"> View the source code on GitHub </a> </p>
+            </td> </tr> <tr>
+            <td> </td> <td>
+              <a href = "mailto:michael.kazman@gmail.com" target = "_blank"> Contact me via E-mail </a>
+            </td> </tr>
+        </table>
+      </div>
+      <div class = "tab-content" name = "sound" hidden>
+        <h2> Sound </h2>
+        <table class = "option section">
+        <tr>
+          <td class = "option header"> Sound Levels </td>
+        </tr>
+        <tr> <td> </td>
+          <td id = "soundLevels">
+            <div class = "option setting" id = "iconSlider">
+              <label class = "option label"> Icon Sound: </label>
+              <input class = "option slider bar" type = "range" max = "100" min = "0" step = "1">
+              <span class = "option slider-text"> </span>
+            </div>
+            <div class = "option setting" id = "searchSlider">
+              <label class = "option label"> Search Sound: </label>
+              <input class = "option slider bar" type = "range" max = "100" min = "0" step = "1">
+              <span class = "option slider-text"> </span>
+            </div>
+            <div class = "option setting" id = "buttonSlider">
+              <label class = "option label"> Button Sound: </label>
+              <input class = "option slider bar" type = "range" max = "100" min = "0" step = "1">
+              <span class = "option slider-text"> 5% </span>
+            </div>
+          </td>
+        </tr> </table>
+        <table class = "option section">
+          <tr>
+            <td class = "option header"> Volume Options </td>
+          </tr> <tr> <td> </td> <td>
+              <div class = "option setting">
+                <input id = "mute" class = "option checkbox" type = "checkbox" value = "false">
+                <label class = "option checkbox label" for = "mute"> Mute All </label>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+  <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+  <script src = "/menu_js/options.js"> </script>
+</html>

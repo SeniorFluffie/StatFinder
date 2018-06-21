@@ -23,10 +23,13 @@ $(document).on('click', '#backButton', function(event) {
     $('#statDisplay').fadeOut(500, function() {
       // display game window after animation
       $('#gameSelect').css('display', 'inline-block');
+      // clear data
+      recentSearch = undefined;
     });
   }, timeout.short);
   // set flag
   gameMenu = true;
+  canSearch = true;
   // go through each game button
   $('[name = "gameButton"]').each(function() {
     // if they are active
@@ -36,14 +39,14 @@ $(document).on('click', '#backButton', function(event) {
   });
   // disable system select
   enableConsoles(false);
-  // clear data
-  recentSearch = undefined;
 });
+
+const refreshTimer = {value: 0, delay: 15, increment: 1, timeout: 1000, switching: false};
 
 // if refresh is pressed
 $(document).on('click', '#refreshButton', function(event) {
-  // if the game menu is disabled (bug fix)
-  if(gameMenu === false && refreshTimer.value >= refreshTimer.delay) {
+  // if the game menu is disabled, no cooldown, and not mid view-switch (bug fixes)
+  if(gameMenu === false && refreshTimer.value >= refreshTimer.delay && !refreshTimer.switching) {
     // play sound (and forward start time)
     let buttonPress = $('#buttonSound')[0];
     buttonPress.play();
@@ -60,19 +63,21 @@ $(document).on('click', '#refreshButton', function(event) {
     // request data (using last search)
     requestData(recentSearch.IGN, recentSearch.gameData);
   }
-  else
-    alert('Please wait ' + (refreshTimer.delay - refreshTimer.value) + ' seconds to refresh again!');
+  // otherwise if timer counting
+  else if(gameMenu === false && !refreshTimer.switching)
+    alert('Please wait ' + (refreshTimer.delay - refreshTimer.value) + ' seconds to refresh!');
 });
 
-const refreshTimer = {value: 0, delay: 8, timeout: 1000};
-
-function incrementTimer() {
-  // increment if below timer
-  if(refreshTimer.value < refreshTimer.delay)
-    refreshTimer.value += 1;
-  // else disable timer
-  else
-    clearInterval(refreshTimer.timer)
+function incrementTimer(timer) {
+  // update timer each interval
+  timer.timer = setInterval(function() {
+    // increment if below timer
+    if(timer.value < timer.delay)
+      timer.value += timer.increment;
+    // else disable timer
+    else
+      clearInterval(timer.timer);
+  }, timer.timeout);
 }
 
 // if switch view is pressed
@@ -83,6 +88,8 @@ $(document).on('click', '#viewSwitch', function(event) {
   // if the game menu is disabled (bug fix)
   if(gameMenu === false) {
     let fadeTimer = {start: 1000, end: 2000};
+    // update flag
+    refreshTimer.switching = true;
     // hide table
     $('#tableDiv').fadeTo(fadeTimer.start, 0, function() {
       // clear table
@@ -90,7 +97,7 @@ $(document).on('click', '#viewSwitch', function(event) {
       // set name
       loadView(true);
       // fade table in
-      $('#tableDiv').fadeTo(fadeTimer.start, 1.0);
+      $('#tableDiv').fadeTo(fadeTimer.start, 1.0, function() { refreshTimer.switching = false; });
     });
   }
 });

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+    <link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel = "stylesheet" href = "/css/popup.css">
+  </head>
+  <body>
+    <audio id = "soundClips">
+      <audio id = "iconSound" src = "/sound/game_press.mp3" "type = audio/mp3"> </audio>
+      <audio id = "searchSound" src = "/sound/search_press.mp3" "type = audio/mp3"> </audio>
+      <audio id = "buttonSound" src = "/sound/button_press.mp3" "type = audio/mp3"> </audio>
+    </audio>
+    <div class = "window standardImage" id = "gameSelect">
+      <div id = "buttonGrid" class = "buttonGrid" data-toggle = "buttons-radio">
+        <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "fortnite" title = "Fortnite">
+        <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "league" title = "League of Legends">
+        <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "pubg" title = "PLAYERUNKNOWN'S BATTLEGROUNDS">
+        <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "csgo" title = "Counter Strike: Global Offensive" disabled>
+        <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "dota" title = "Dota 2" disabled>
+        <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "overwatch" title = "Overwatch" disabled>
+        <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "osu" title = "osu!">
+        <button name = "gameButton" class = "btn btn-default gameButton standardImage" id = "halo" title = "Halo 5: Guardians">
+      </div>
+      <div id = "systemSelector" data-toggle = "buttons-radio">
+        <button name = "systemButton" class = "systemButton btn btn-default gameButton standardImage" id = "pc" title = "PC" disabled>
+        <button name = "systemButton" class = "systemButton btn btn-default gameButton standardImage" id = "ps4" title = "PlayStation 4" disabled>
+        <button name = "systemButton" class = "systemButton btn btn-default gameButton standardImage" id = "xbox" title = "Xbox One" disabled>
+      </div>
+      <form onsubmit = "menu_js/popup.js">
+        <div class = "inputForm">
+          <input id = "searchBar" type = "text" placeholder = "Please enter your In-Game-Name" autofocus>
+          <input class = "inputForm" type = "submit" value = "Search" id = "searchButton">
+        </div>
+      </form>
+    </div>
+    <div class = "window standardImage" id = "statDisplay">
+      <div id = "statBanner">
+        <img id = "playerIcon">
+        <div id = "centerButtons">
+          <input id = "playerName" readonly>
+          <button id = "viewSwitch"> SWITCH VIEW </button>
+        </div>
+        <div id = "statButtons">
+          <button id = "backButton"> BACK </button>
+          <button id = "refreshButton"> REFRESH </button>
+        </div>
+      </div>
+      <div id = "tableDiv"> </div>
+    </div>
+  </body>
+  <script src = "/menu_js/gameButtons.js"> </script>
+  <script src = "/menu_js/statButtons.js"> </script>
+  <script src = "/game_js/fortnite.js"> </script>
+  <script src = "/game_js/league.js"> </script>
+  <script src = "/game_js/pubg.js"> </script>
+  <script src = "/game_js/overwatch.js"> </script>
+  <script src = "/game_js/osu.js"> </script>
+  <script src = "/game_js/halo.js"> </script>
+  <script src = "/menu_js/statHover.js"> </script>
+  <script src = "/menu_js/options.js"> </script>
+  <script src = "/game_js/popup.js"> </script>
+</html>

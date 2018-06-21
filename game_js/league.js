@@ -75,20 +75,24 @@ function simplifyLeague(data) {
 
 function leagueTable(data) {
   // table information
-  const headerData = [{header: 'SUMMONER', index: [0], property: ['']}, {header: 'RANKED', property: ['rankedStats'], index: [1]},
-  {header: 'MASTERY', property: ['championMastery'], index: [2], increment: -1}, {header: 'MASTERY', property: ['championMastery'], index: [2], increment: 1}];
+  const headerData = [{header: 'SUMMONER', index: [0], property: ['']}, {header: 'RANKED', property: ['rankedStats'], index: [1]}];
+
   const tableCells = [[{title: 'Summoner ID', key: 'id'}, {title: 'Level', key: 'level'}, {title: 'Total Mastery', key: 'masteryLevel'}],
-
   [{title: 'League', key: 'leagueName'}, {title: 'Tier', key: 'tier'}, {title: 'Rank', key: 'rank'}, {title: 'LP', key: 'leaguePoints'},
-  {title: 'Wins', key: 'wins'}, {title: 'Losses', key: 'losses'}],
+  {title: 'Wins', key: 'wins'}, {title: 'Losses', key: 'losses'}]];
 
-  [{title: '', key: 'champImage', img: true, increment: true, imgTitle: 'champName'}, {title: 'Name', key: 'champName'}, {title: 'Level', key: 'championLevel'}, {title: 'Points', key: 'championPoints'},
+  const masteryData = [{header: 'MASTERY', property: ['championMastery'], index: [0], increment: -1},
+  {header: 'MASTERY', property: ['championMastery'], index: [0], increment: 1}];
+
+  const masteryCells = [[{title: '', key: 'champImage', img: true, increment: true, imgTitle: 'champName'}, {title: 'Name', key: 'champName'}, {title: 'Level', key: 'championLevel'}, {title: 'Points', key: 'championPoints'},
   {title: '', key: 'champImage', img: true, increment: true, imgTitle: 'champName'}, {title: 'Name', key: 'champName'}, {title: 'Level', key: 'championLevel'}, {title: 'Points', key: 'championPoints'}]];
+
   // initialize table styling
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '155%', 'font-size': '9pt'}];
-  let headerStyle = {'line-height': '150%'};
+  let headerStyle = {'line-height': '130%'};
   // set icon
-  $('#playerIcon').attr('src', 'http://ddragon.leagueoflegends.com/cdn/<ver>/img/profileicon/<profileIconId>.png'.replace('<ver>', realmData.version).replace('<profileIconId>', data.profileIconId));
+  $('#playerIcon').prop('src', 'http://ddragon.leagueoflegends.com/cdn/<ver>/img/profileicon/<profileIconId>.png'.replace('<ver>', realmData.version).replace('<profileIconId>', data.profileIconId));
   // setup display
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);
+  createTable(data, [masteryData, masteryCells], [headerStyle, cellStyle]);
 }

@@ -2,14 +2,14 @@
 'use strict';
 
 const API_KEYS = [
-  {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
-  {game: 'league', key: 'RGAPI-57e0e894-2dec-44f1-91f0-b6c289eb16f8', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
-  {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNjE5MDg4MC0zYTNkLTAxMzYtMDAyYi0wYWY1M2JmOGE5MzMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI2MzY4NjUzLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIifQ.LFPtLYDerMSZiDjH_DQoqTSV7TChfkvdZFkaYR_Oxxg', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
-  {game: 'csgo', key: '', url: '', oneSystem: true, regions: true, oneView: true},
-  {game: 'dota', key: '2F0D06A2DD606DD12F2A27EEE173826A', url: '', oneSystem: true, regions: true, oneView: true},
+  {game: 'fortnite', key: 'XXXXXXXXXX', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
+  {game: 'league', key: 'XXXXXXXXXX', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
+  {game: 'pubg', key: 'XXXXXXXXXX', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
+  {game: 'csgo', key: 'XXXXXXXXXX', url: '', oneSystem: true, regions: true, oneView: true},
+  {game: 'dota', key: 'XXXXXXXXXX', url: '', oneSystem: true, regions: true, oneView: true},
   {game: 'overwatch', key: '', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
-  {game: 'osu', key: '7460bfcb582e755d640beef05016060ac8d9c87a', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
-  {game: 'halo', key: '781dc5e72caa4a9f8af62eafe000cc53', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
+  {game: 'osu', key: 'XXXXXXXXXX', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
+  {game: 'halo', key: 'XXXXXXXXXX', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
 ];
 
 const SYSTEM_TAGS = [
@@ -17,6 +17,8 @@ const SYSTEM_TAGS = [
 ];
 
 const timeout = {short: 500, medium: 750, long: 1000};
+
+var canSearch = true;
 
 window.onload = function() {
   // player search
@@ -53,14 +55,14 @@ function search(IGN) {
     gameIndex++;
   });
   // if a game is selected
-  if(gameIndex < gameButtons.length) {
+  if(gameIndex < gameButtons.length && canSearch) {
     // add index property
     API_KEYS[gameIndex].gameID = gameIndex;
     // request data from the specific game
     requestData(IGN, API_KEYS[gameIndex]);
   }
   // else display alert
-  else
+  else if(gameIndex >= gameButtons.length && !canSearch)
     alert('Please select a game to search stats for!');
 }
 
@@ -97,6 +99,8 @@ function requestData(IGN, gameData) {
   // open asynchronous get request
   request.open('GET', url, true);
   setHeader(gameData, request);
+  // update flag (stops spamming)
+  canSearch = false;
   // instructions for when the message is recieved
   request.onreadystatechange = function() {
     // handle status codes
@@ -104,8 +108,10 @@ function requestData(IGN, gameData) {
       // parse the data
       let data = JSON.parse(request.responseText);
       // general error check
-      if(data.error !== undefined || data === undefined || data.length === 0)
+      if(data.error !== undefined || data === undefined || data.length === 0) {
+        canSearch = true;
         alert('Error 404! User Not Found!');
+      }
       else {
         // add response (for sending headers)
         data = Object.assign({key: gameData.key, game: gameData.game, hasLoaded: false}, data);
@@ -137,11 +143,9 @@ function setHeader(data, request) {
 function requestHandler(request, success) {
   if(request.readyState === 4) {
     // if success
-    if(request.status === 200) {
+    if(request.status === 200)
       // run function
-      console.log('Code 200! Request Successful!');
       success();
-    }
     // else display the error code
     else if(request.status === 400)
     alert('Error 400! Bad Search Request!');
@@ -151,6 +155,8 @@ function requestHandler(request, success) {
     alert('Error 403! Forbidden Request!');
     else if(request.status === 404)
     alert('Error 404! User Not Found!');
+    else if(request.status === 429)
+    alert('Error 429! Too Many Requests!');
     else if(request.status === 500)
     alert('Error 500! Internal Server Error!');
     else if(request.status === 503)
@@ -239,7 +245,7 @@ function initializeWindow() {
   // set boolean
   gameMenu = false;
   // enable timer
-  refreshTimer.timer = setInterval(incrementTimer, refreshTimer.timeout);
+  incrementTimer(refreshTimer);
 }
 
 function propertySearch(object, prop) {
@@ -262,7 +268,6 @@ function propertySearch(object, prop) {
   }
   return undefined;
 }
-
 
 function updateView(data, func, counter) {
   // store data
@@ -365,7 +370,7 @@ function createTableRow(table, data, property, css) {
       let title = data[i].imgTitle ? propertySearch(property[data.increment], data[i].imgTitle) : '';
       // image table cell
       cellTitle = $('<span>').text(data[i].title).css(css[0]);
-      cellValue = $('<img>', {src: text, class: 'champIcon', title: title});
+      cellValue = $('<img>', {src: text, class: 'cellIcon', title: title});
     }
     // combine elements to cell
     let tableCell = $('<td>').css(css[2]).append(cellTitle).append(cellValue);

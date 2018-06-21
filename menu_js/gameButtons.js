@@ -1,11 +1,12 @@
 // for optimizations and debugging
 'use strict';
 
-// declare multi-platform games (using id)
-const multiPlatform = ['fortniteButton', 'overwatchButton'];
-
 // if a game button element is clicked
 $(document).on('click', '[name = "gameButton"]', function(event) {
+  let multiPlatform = [];
+  // get all games that enable systems
+  for(let game of API_KEYS)
+    game.oneSystem ? '' : multiPlatform.push(game.game)
   // stop default behavior
   event.stopPropagation();
   // play sound (and forward start time)
@@ -49,10 +50,8 @@ function enableConsoles(multiPlatform) {
   // iterate through them
   for(let i = 0; i < systemButtons.length; i++) {
     // enable the system buttons
-    if(multiPlatform) {
-      $(systemButtons[i]).removeClass('disabled');
+    if(multiPlatform)
       $(systemButtons[i]).prop('disabled', false);
-    }
     // else disable and deactivate them
     else {
       $(systemButtons[i]).removeClass('active');
