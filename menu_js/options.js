@@ -9,7 +9,7 @@ window.onload = loadOptions();
 function loadOptions() {
   let options;
   // retrieve stored data
-  chrome.storage.sync.get({ign: '', game: '', system: '', mute: false, iconSlider: '', searchSlider: '', buttonSlider: ''}, function(items) {
+  chrome.storage.sync.get({ign: '', game: '', system: '', mute: false, iconSlider: 50, searchSlider: 50, buttonSlider: 50}, function(items) {
     options = items;
     // apply property to HTML
     for(let property in items)

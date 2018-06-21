@@ -5,9 +5,9 @@ const API_KEYS = [
   {game: 'fortnite', key: 'XXXXXXXXXX', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
   {game: 'league', key: 'XXXXXXXXXX', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
   {game: 'pubg', key: 'XXXXXXXXXX', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
-  {game: 'csgo', key: 'XXXXXXXXXX', url: '', oneSystem: true, regions: true, oneView: true},
-  {game: 'dota', key: 'XXXXXXXXXX', url: '', oneSystem: true, regions: true, oneView: true},
-  {game: 'overwatch', key: '', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
+  {game: 'csgo', key: '', url: '', oneSystem: true, regions: true, oneView: true},
+  {game: 'dota', key: '', url: '', oneSystem: true, regions: true, oneView: true},
+  {game: 'overwatch', key: 'XXXXXXXXXX', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
   {game: 'osu', key: 'XXXXXXXXXX', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
   {game: 'halo', key: 'XXXXXXXXXX', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
 ];
