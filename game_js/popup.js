@@ -367,14 +367,23 @@ function createTableRow(table, data, property, css) {
       // regular cell
       cellTitle = $('<span>').css(css[0]).text(data[i].title);
       // round number
-      if(numberCheck(text))
+      if(numberCheck(text)) {
         text = Math.round(text * 100) / 100;
+        text = addCommas(text)
+      }
       // capitalize first letter of word
       else if(lowerCheck(text))
         text = capitalizeFirst(text);
       // otherwise use preset display values
       else if(text.displayValue !== undefined || text.value !== undefined)
         text.displayValue ? text = text.displayValue : text = text.value;
+      // remove exclusion character
+      if(typeof text === 'string' && text.includes('&'))
+        text = text.toString().replace('&', '');
+      // else add commas
+      else
+        text = addCommas(text);
+      // set value
       cellValue = $('<span>').css(css[1]).text(text);
     } else {
       // set title of image
@@ -396,6 +405,14 @@ function numberCheck(number) {
   // either a number thats not null or string containing only numbers
   return (typeof number === 'number' && number !== 0)
   || (typeof number === 'string' && !number.search(/^\d*\.?\d+$/))
+}
+
+function addCommas (number) {
+  // seperate integer and decimal
+  let text = number.toString().split('.');
+  // add in commas to integer then splice back
+  text[0] = text[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return text.join('.');
 }
 
 function lowerCheck(string) {

@@ -10,6 +10,8 @@ function osuSearch(data) {
   retrieveMaps(osu_URLS.url[0], player, 'maps');
   // after reqs are recieved
   setTimeout(function() {
+    // prepare data
+    simplifyOsu(player);
     // set icon
     $('#playerIcon').prop('src', '/images/icon_osu.png');
     // setup window
@@ -17,7 +19,7 @@ function osuSearch(data) {
     initializeWindow();
     // create table
     loadView();
-  }, timeout.short);
+  }, timeout.medium);
 }
 
 function retrieveMaps(url, data, prop) {
@@ -38,6 +40,11 @@ function retrieveMaps(url, data, prop) {
     });
   };
   request.send();
+}
+
+function simplifyOsu(data) {
+  for(let map of data.maps)
+    map.beatmap_id = map.beatmap_id + '&';
 }
 
 function osuTable(data) {

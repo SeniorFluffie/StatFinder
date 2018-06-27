@@ -64,7 +64,7 @@ function simplifyHalo(data) {
   // find top playlist in that season
   data.Arena.ArenaStats.HighestCsrPlaylistId = objectSearch(data.Arena.ArenaStats.HighestCsrPlaylistId, data.Arena.ArenaStats.TopSeason.playlists, 'id').name;
   // change values to their names
-  data.Arena.ArenaStats.HighestCsrSeasonId = data.Arena.ArenaStats.TopSeason.name;
+  data.Arena.ArenaStats.HighestCsrSeasonId = data.Arena.ArenaStats.TopSeason.name + '&';
   // find rank
   data.Arena.ArenaStats.HighestCsrAttained.DesignationId = objectSearch(data.Arena.ArenaStats.HighestCsrAttained.DesignationId,
   data.Designations, 'id').name;
