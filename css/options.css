@@ -67,9 +67,9 @@ hr {
 #tab-list .tab.active {
 	background-color: rgb(212,212,212);
 	border-color: rgb(191,191,191);
-	color: black;
+	color: rgb(0,0,0);
 	text-shadow: rgb(219,219,219) 0px 1px 0px;
-	box-shadow: inset -12px 0 30px -30px black;
+	box-shadow: inset -12px 0 30px -30px rgb(0,0,0);
 }
 
 body.tab.active {

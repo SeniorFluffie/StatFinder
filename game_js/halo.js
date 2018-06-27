@@ -8,7 +8,7 @@ url: [{url: '/profile/h5/profiles/<ign>/spartan?crop=portrait', key: 'SpartanImg
 {url: '/profile/h5/profiles/<ign>/emblem', key: 'EmblemImg', img: true},
 {url: '/stats/h5/servicerecords/arena?players=<ign>', key: 'Arena'}, {url: '/stats/h5/players/<ign>/matches?count=3', key: 'Matches'}],
 metadata: [{url: '/metadata/h5/metadata/seasons', key: 'Seasons'}, {url: '/metadata/h5/metadata/csr-designations', key: 'Designations'},
-{url: '/metadata/h5/metadata/game-base-variants', key: 'Gamemodes'}, {url: '/metadata/h5/metadata/weapons', key: 'Weapons'}]};
+{url: '/metadata/h5/metadata/game-base-variants', key: 'Gamemodes'}, {url: '/metadata/h5/metadata/weapons', key: 'Weapons'}], counter: 0};
 
 function haloSearch(data) {
   // prepare new array (incase id changes)
@@ -24,9 +24,9 @@ function haloSearch(data) {
     // prepare data
     simplifyHalo(data);
     // setup window
+    updateView(data, haloTable, haloCounter, halo_URLS);
     initializeWindow();
     // create tables
-    updateView(data, haloTable, haloCounter);
     loadView();
   }, timeout.medium);
 }
@@ -48,6 +48,7 @@ function getHaloData(data) {
         // parse data
         let parse = url.img ? request.responseURL : JSON.parse(request.responseText).Results;
         data[url.key] = parse;
+        halo_URLS.counter++;
       });
     };
     request.send();
@@ -82,24 +83,24 @@ function simplifyHalo(data) {
 
 function haloTable(data, tableNum) {
   // show specific table
-  tableNum === 0 ? addHaloStats(data, tableNum) :  addHaloCareer(data, tableNum);
+  tableNum === 0 ? addHaloStats(data, tableNum) : addHaloCareer(data, tableNum);
 }
 
 function addHaloStats(data) {
   // table information
-  const headerData = [{header: 'SPARTAN:', index: [0], property: ['Player']}, {header: 'ARENA CAREER:', index: [1, 2, 3], property: ['Arena', 'ArenaStats']}];
+  const headerData = [{header: 'SPARTAN', index: [0], property: ['Player']}, {header: 'ARENA CAREER', index: [1, 2, 3], property: ['Arena', 'ArenaStats']}];
 
-  const tableCells = [[{title: 'Emblem:',  key: 'EmblemImg', img: true}, {title: 'Level:',  key: 'SpartanRank'},
-  {title: 'XP:',  key: 'Xp'}, {title: 'Service Tag:', key: 'ServiceTag'}, {title: 'Company:',  key: 'Name'}],
+  const tableCells = [[{title: 'Emblem',  key: 'EmblemImg', img: true}, {title: 'Level',  key: 'SpartanRank'},
+  {title: 'XP',  key: 'Xp'}, {title: 'Service Tag', key: 'ServiceTag'}, {title: 'Company',  key: 'Name'}],
 
-  [{title: 'Kills:', key: 'TotalSpartanKills'}, {title: 'Deaths:', key: 'TotalDeaths'}, {title: 'Wins:', key: 'TotalGamesWon'},
-  {title: 'Losses:', key: 'TotalGamesLost'}, {title: 'Ties:', key: 'TotalGamesTied'}],
+  [{title: 'Kills', key: 'TotalSpartanKills'}, {title: 'Deaths', key: 'TotalDeaths'}, {title: 'Wins', key: 'TotalGamesWon'},
+  {title: 'Losses', key: 'TotalGamesLost'}, {title: 'Ties', key: 'TotalGamesTied'}],
 
-  [{title: 'Assists:', key: 'TotalAssists'}, {title: 'Headshots:', key: 'TotalHeadshots'}, {title: 'Melee Kills:', key: 'TotalMeleeKills'},
-  {title: 'Assassinations:', key: 'TotalAssassinations'}, {title: 'Shoulder Kills:', key: 'TotalShoulderBashKills'}],
+  [{title: 'Assists', key: 'TotalAssists'}, {title: 'Headshots', key: 'TotalHeadshots'}, {title: 'Melee Kills', key: 'TotalMeleeKills'},
+  {title: 'Assassinations', key: 'TotalAssassinations'}, {title: 'Shoulder Kills', key: 'TotalShoulderBashKills'}],
 
-  [{title: 'Shots Fired:', key: 'TotalShotsFired'}, {title: 'Shots Landed:', key: 'TotalShotsLanded'}, {title: 'Grenade Kills:', key: 'TotalGrenadeKills'},
-  {title: 'Power Weapon Grabs:', key: 'TotalPowerWeaponGrabs'}, {title: 'Power Weapon Kills:', key: 'TotalPowerWeaponKills'}]];
+  [{title: 'Shots Fired', key: 'TotalShotsFired'}, {title: 'Shots Landed', key: 'TotalShotsLanded'}, {title: 'Grenade Kills', key: 'TotalGrenadeKills'},
+  {title: 'Power Weapon Grabs', key: 'TotalPowerWeaponGrabs'}, {title: 'Power Weapon Kills', key: 'TotalPowerWeaponKills'}]];
   // initialize table styling
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '180%', 'font-size': '9pt'}];
   let headerStyle = {'line-height': '165%'};
@@ -110,18 +111,18 @@ function addHaloStats(data) {
 }
 
 function addHaloCareer(data) {
-  const headerData = [{header: 'BEST SEASON:', property: ['Arena', 'ArenaStats'], index: [0]},
-  {header: 'DEADLIEST ARENA WEAPON:', property: ['Arena', 'ArenaStats', 'WeaponWithMostKills'], index: [1]},
-  {header: 'LAST 3 GAMES:', property: ['Matches'], index: [2, 2, 2], increment: -1}];
+  const headerData = [{header: 'BEST SEASON', property: ['Arena', 'ArenaStats'], index: [0]},
+  {header: 'DEADLIEST ARENA WEAPON', property: ['Arena', 'ArenaStats', 'WeaponWithMostKills'], index: [1]},
+  {header: 'LAST 3 GAMES', property: ['Matches'], index: [2, 2, 2], increment: -1}];
 
-  const tableCells = [[{title: 'Season:', key: 'HighestCsrSeasonId'}, {title: 'Playlist:', key: 'HighestCsrPlaylistId'},
-  {title: 'Rank:', key: 'DesignationId'}, {title: 'Tier:', key: 'Tier'}, {title: 'CSR:', key: 'Csr'}],
+  const tableCells = [[{title: 'Season', key: 'HighestCsrSeasonId'}, {title: 'Playlist', key: 'HighestCsrPlaylistId'},
+  {title: 'Rank', key: 'DesignationId'}, {title: 'Tier', key: 'Tier'}, {title: 'CSR', key: 'Csr'}],
 
-  [{title: 'Weapon:', key: 'WeaponId'}, {title: 'Kills:', key: 'TotalKills'}, {title: 'Headshots:', key: 'TotalHeadshots'},
-  {title: 'Shots Fired:', key: 'TotalShotsFired'}, {title: 'Shots Landed:', key: 'TotalShotsLanded'}],
+  [{title: 'Weapon', key: 'WeaponId'}, {title: 'Kills', key: 'TotalKills'}, {title: 'Headshots', key: 'TotalHeadshots'},
+  {title: 'Shots Fired', key: 'TotalShotsFired'}, {title: 'Shots Landed', key: 'TotalShotsLanded'}],
 
-  [{title: 'Position:', key: 'GameRank', increment: true}, {title: 'Game Mode:', key: 'GameBaseVariantId'}, {title: 'Kills:', key: 'TotalKills'},
-  {title: 'Deaths:', key: 'TotalDeaths'}, {title: 'Assists:', key: 'TotalAssists'}]];
+  [{title: 'Position', key: 'GameRank', increment: true}, {title: 'Game Mode', key: 'GameBaseVariantId'}, {title: 'Kills', key: 'TotalKills'},
+  {title: 'Deaths', key: 'TotalDeaths'}, {title: 'Assists', key: 'TotalAssists'}]];
   // initialize table styling
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '150%', 'font-size': '9pt'}];
   let headerStyle = {'line-height': '135%'};

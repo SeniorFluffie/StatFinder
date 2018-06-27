@@ -32,7 +32,7 @@ window.onload = function() {
     // save player name
     let IGN = searchBar.value;
     // if no name in field
-    IGN === '' ? alert('Please enter a valid In-Game-Name!') : search(IGN);
+    IGN === '' ? alert('Please enter a valid username!') : search(IGN);
   };
 }
 
@@ -62,13 +62,15 @@ function search(IGN) {
     requestData(IGN, API_KEYS[gameIndex]);
   }
   // else display alert
-  else if(gameIndex >= gameButtons.length && !canSearch)
+  else if(gameIndex >= gameButtons.length && canSearch)
     alert('Please select a game to search stats for!');
 }
 
 function requestData(IGN, gameData) {
+  // enable timer
+  incrementTimer(refreshTimer);
   // store copy of search (for refresh button)
-  recentSearch = {IGN: IGN, gameData: gameData};
+  recentSearch === undefined ? recentSearch = {IGN: IGN, gameData: gameData} : recentSearch = Object.assign(recentSearch, {IGN: IGN, gameData: gameData});
   // localize the url
   let url;
   // set url for single-platform
@@ -81,8 +83,10 @@ function requestData(IGN, gameData) {
     // iterate through all button elements
     for(var j = 0; j < systemButtons.length; j++) {
       // if there is no system selected
-      if(!$(systemButtons[j]).hasClass('active') && j === systemButtons.length - 1)
+      if(!$(systemButtons[j]).hasClass('active') && j === systemButtons.length - 1) {
         alert('Please select a system you would like to search the stats for!');
+        canSearch = true;
+      }
       // else stop on the active button
       else if($(systemButtons[j]).hasClass('active')) {
         // convert to readable url
@@ -90,6 +94,8 @@ function requestData(IGN, gameData) {
           IGN = IGN.replace('#', '-');
         // set url
         url = gameData.url.replace('<sys>', SYSTEM_TAGS[j]).replace('<ign>', IGN).replace('<key>', gameData.key);
+        // update flag (stops spamming)
+        canSearch = false;
         break;
       }
     }
@@ -99,8 +105,6 @@ function requestData(IGN, gameData) {
   // open asynchronous get request
   request.open('GET', url, true);
   setHeader(gameData, request);
-  // update flag (stops spamming)
-  canSearch = false;
   // instructions for when the message is recieved
   request.onreadystatechange = function() {
     // handle status codes
@@ -269,9 +273,16 @@ function propertySearch(object, prop) {
   return undefined;
 }
 
-function updateView(data, func, counter) {
+function updateView(data, func, counter, urlData) {
+  // re-use data if error occurs
+  if(urlData === undefined || urlData.counter === urlData.url.length) {
+    recentSearch.stats = undefined;
+    recentSearch.data = data;
+  } else
+    recentSearch.stats = $('#tableDiv')[0].innerHTML;
+  // reset counters
+  if(urlData) urlData.counter = 0;
   // store data
-  recentSearch.data = data;
   recentSearch.func = func;
   recentSearch.counter = counter;
 }
@@ -279,11 +290,11 @@ function updateView(data, func, counter) {
 function loadView(switchView) {
   // normal view
   if(recentSearch.counter === undefined)
-    recentSearch.func(recentSearch.data, 0);
+    recentSearch.stats ? $('#tableDiv').html(recentSearch.stats) : recentSearch.func(recentSearch.data, 0);
   else
-    // either increment or normal
-    switchView ? recentSearch.func(recentSearch.data, ++recentSearch.counter.value % recentSearch.counter.mod)
-    : recentSearch.func(recentSearch.data, recentSearch.counter.value % recentSearch.counter.mod);
+    // either increment or normal --> either saved display or create new one
+    switchView ? recentSearch.func(recentSearch.data, recentSearch.counter.value = ++recentSearch.counter.value % recentSearch.counter.mod)
+    : (recentSearch.stats ? $('#tableDiv').html(recentSearch.stats) : recentSearch.func(recentSearch.data, recentSearch.counter.value % recentSearch.counter.mod));
 }
 
 function createTable(data, tableData, style) {

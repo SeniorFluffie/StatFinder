@@ -1,7 +1,7 @@
 {
   "name": "StatFinder",
   "short_name": "StatFinder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple yet sleek API for finding video game stats!",
   "options_page": "html/options.html",
 
@@ -25,7 +25,7 @@
   },
 
   "content_security_policy":
-    "default-src 'self'; script-src 'unsafe-eval' https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com; img-src data: http:; style-src https://maxcdn.bootstrapcdn.com; font-src https://maxcdn.bootstrapcdn.com; connect-src * data: blob: 'unsafe-eval' 'unsafe-inline';",
+    "default-src 'self'; script-src 'unsafe-eval' https://ajax.googleapis.com https://maxcdn.bootstrapcdn.com; img-src data: http:; style-src 'unsafe-inline' https://maxcdn.bootstrapcdn.com; font-src https://maxcdn.bootstrapcdn.com; connect-src * data: blob: 'unsafe-eval' 'unsafe-inline';",
 
   "manifest_version": 2
 }

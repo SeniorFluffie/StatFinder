@@ -6,12 +6,13 @@ let overwatchCounter = {value: 0, mod: 2};
 function overwatchSearch(data) {
   // setup window
   $('#playerIcon').prop('src', data.icon);
-  initializeWindow();
   // prepare data
   localizeHeroes(data);
   simplifyOverwatch(data);
-  // create tables
+  // setup window
   updateView(data, overwatchTable, overwatchCounter);
+  initializeWindow();
+  // create tables
   loadView(false);
 }
 
@@ -71,18 +72,18 @@ function addOverwatchCareer(data, tableNum) {
   let headerData, tableCells, headerStyle, cellStyle;
   // if quickplay table
   if(tableNum === 0)  {
-    headerData = [{header: ['CAREER STATS:'], index: [0]}];
-    tableCells = [[{title: '', key: 'levelIcon', img: true}, {title: '', key: 'prestigeIcon', img: true}, {title: 'Level:', key: 'level'},
-    {title: 'Prestige:', key: 'prestige'}, {title: '', key: 'ratingIcon', img: true}, {title: 'Rank:', key: 'ratingName'}, {title: 'Value:', key: 'rating'}]];
+    headerData = [{header: ['CAREER STATS'], index: [0]}];
+    tableCells = [[{title: '', key: 'levelIcon', img: true}, {title: '', key: 'prestigeIcon', img: true}, {title: 'Level', key: 'level'},
+    {title: 'Prestige', key: 'prestige'}, {title: '', key: 'ratingIcon', img: true}, {title: 'Rank', key: 'ratingName'}, {title: 'Value', key: 'rating'}]];
     headerStyle = {'line-height': '105%'};
     cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '130%', 'font-size': '10pt'}];
   }
   // else competitive table
   else if(tableNum === 1) {
     // table information
-    headerData = [{header: ['TOP COMPETITIVE STATS:'], property: ['topHeroes'], index: [0, 0, 0], increment: -1}];
-    tableCells = [[{title: 'Name', key: 'name', increment: true}, {title: 'Time:', key: 'timePlayed'}, {title: 'Wins', key: 'gamesWon'}, {title: 'Win %:', key: 'winPercentage'},
-    {title: 'Elims Per Life', key: 'eliminationsPerLife'}, {title: 'Weapon Accuracy:', key: 'weaponAccuracy'}, {title: 'Objective Kills:', key: 'objectiveKillsAvg'}]];
+    headerData = [{header: ['TOP COMPETITIVE STATS'], property: ['topHeroes'], index: [0, 0, 0], increment: -1}];
+    tableCells = [[{title: 'Name', key: 'name', increment: true}, {title: 'Time', key: 'timePlayed'}, {title: 'Wins', key: 'gamesWon'}, {title: 'Win %', key: 'winPercentage'},
+    {title: 'Elims Per Life', key: 'eliminationsPerLife'}, {title: 'Weapon Accuracy', key: 'weaponAccuracy'}, {title: 'Objective Kills', key: 'objectiveKillsAvg'}]];
     headerStyle = {'line-height': '100%'};
     cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '115%', 'font-size': '8pt'}];
   }
@@ -93,25 +94,25 @@ function addOverwatchCareer(data, tableNum) {
 function addOverwatchStats(data, headerNum) {
   // table information
   let headerData;
-  headerNum === 0 ? headerData = [{header: 'QUICKPLAY STATS:', property: ['quickPlayStats'], index: [0, 1, 2, 3, 4]}]
-  : headerData = [{header: 'COMPETITIVE STATS:', property: ['competitiveStats'], index: [0, 1, 2, 3, 4]}];
-  const tableCells = [[{title: 'Games:', key: 'played'}, {title: 'Wins:', key: 'won'}, {title: 'Time:', key: 'timePlayed'}, {title: 'Cards:', key: 'cards'},
-  {title: 'Medals:', key: 'medals'}, {title: 'Gold:', key: 'medalsGold'}, {title: 'Silver:', key: 'medalsSilver'}],
+  headerNum === 0 ? headerData = [{header: 'QUICKPLAY STATS', property: ['quickPlayStats'], index: [0, 1, 2, 3, 4]}]
+  : headerData = [{header: 'COMPETITIVE STATS', property: ['competitiveStats'], index: [0, 1, 2, 3, 4]}];
+  const tableCells = [[{title: 'Games', key: 'played'}, {title: 'Wins', key: 'won'}, {title: 'Time', key: 'timePlayed'}, {title: 'Cards', key: 'cards'},
+  {title: 'Medals', key: 'medals'}, {title: 'Gold', key: 'medalsGold'}, {title: 'Silver', key: 'medalsSilver'}],
 
-  [{title: 'Elims:', key: 'eliminations'}, {title: 'Final Blows:', key: 'finalBlows'}, {title: 'Solo Kills:', key: 'soloKills'}, {title: 'Deaths:', key: 'deaths'},
-  {title: 'Obj Kills:', key: 'objectiveKills'}, {title: 'Obj Time:', key: 'objectiveTime'}, {title: 'Multi-Kills:', key: 'multikills'}],
+  [{title: 'Elims', key: 'eliminations'}, {title: 'Final Blows', key: 'finalBlows'}, {title: 'Solo Kills', key: 'soloKills'}, {title: 'Deaths', key: 'deaths'},
+  {title: 'Obj Kills', key: 'objectiveKills'}, {title: 'Obj Time', key: 'objectiveTime'}, {title: 'Multi-Kills', key: 'multikills'}],
 
-  [{title: 'Dmg:', key: 'damageDone'}, {title: 'Hero Dmg:', key: 'heroDamageDone'}, {title: 'Shield Dmg:', key: 'barrierDamageDone'},
-  {title: 'Fire:', key: 'timeSpentOnFire'}, {title: 'Healing:', key: 'healingDone'}, {title: 'Def Assists:', key: 'defensiveAssists'},
-  {title: 'Off Assists:', key: 'offensiveAssists'}],
+  [{title: 'Dmg', key: 'damageDone'}, {title: 'Hero Dmg', key: 'heroDamageDone'}, {title: 'Shield Dmg', key: 'barrierDamageDone'},
+  {title: 'Fire', key: 'timeSpentOnFire'}, {title: 'Healing', key: 'healingDone'}, {title: 'Def Assists', key: 'defensiveAssists'},
+  {title: 'Off Assists', key: 'offensiveAssists'}],
 
-  [{title: 'Most Elims:', key: 'eliminationsMostInGame'}, {title: 'Most FB:', key: 'finalBlowsMostInGame'}, {title: 'Most SK:', key: 'soloKillsMostInGame'},
-  {title: 'Longest Fire:', key: 'timeSpentOnFireMostInGame'}, {title: 'Most OK:', key: 'objectiveKillsMostInGame'},
-  {title: 'Most OT:', key: 'objectiveTimeMostInGame'}, {title: 'Largest MK:', key: 'multikillsBest'}],
+  [{title: 'Most Elims', key: 'eliminationsMostInGame'}, {title: 'Most FB', key: 'finalBlowsMostInGame'}, {title: 'Most SK', key: 'soloKillsMostInGame'},
+  {title: 'Longest Fire', key: 'timeSpentOnFireMostInGame'}, {title: 'Most OK', key: 'objectiveKillsMostInGame'},
+  {title: 'Most OT', key: 'objectiveTimeMostInGame'}, {title: 'Largest MK', key: 'multikillsBest'}],
 
-  [{title: 'Most Dmg:', key: 'allDamageDoneMostInGame'}, {title: 'Most HD:', key: 'heroDamageDoneMostInGame'}, {title: 'Most SD:', key: 'barrierDamageDoneMostInGame'},
-  {title: 'Best Streak:', key: 'killsStreakBest'}, {title: 'Most Healing:', key: 'healingDoneMostInGame'}, {title: 'Most DA:', key: 'defensiveAssistsMostInGame'},
-  {title: 'Most OA:', key: 'offensiveAssistsMostInGame'}]];
+  [{title: 'Most Dmg', key: 'allDamageDoneMostInGame'}, {title: 'Most HD', key: 'heroDamageDoneMostInGame'}, {title: 'Most SD', key: 'barrierDamageDoneMostInGame'},
+  {title: 'Best Streak', key: 'killsStreakBest'}, {title: 'Most Healing', key: 'healingDoneMostInGame'}, {title: 'Most DA', key: 'defensiveAssistsMostInGame'},
+  {title: 'Most OA', key: 'offensiveAssistsMostInGame'}]];
   // initialize table styling
   let headerStyle = {'line-height': '105%'};
   let fontSize, lineHeight;

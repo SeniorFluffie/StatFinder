@@ -2,7 +2,7 @@
 'use strict';
 
 // local search data, flag variable
-var recentSearch, gameMenu = false;
+var recentSearch, gameMenu = true;
 
 // upon image load error
 $(document).ready(function() {
@@ -41,12 +41,12 @@ $(document).on('click', '#backButton', function(event) {
   enableConsoles(false);
 });
 
-const refreshTimer = {value: 0, delay: 15, increment: 1, timeout: 1000, switching: false};
+const refreshTimer = {value: 0, delay: 7, increment: 1, timeout: 1000, active: false, switching: false};
 
 // if refresh is pressed
 $(document).on('click', '#refreshButton', function(event) {
   // if the game menu is disabled, no cooldown, and not mid view-switch (bug fixes)
-  if(gameMenu === false && refreshTimer.value >= refreshTimer.delay && !refreshTimer.switching) {
+  if(gameMenu === false && refreshTimer.value === 0 && !refreshTimer.switching) {
     // play sound (and forward start time)
     let buttonPress = $('#buttonSound')[0];
     buttonPress.play();
@@ -58,25 +58,31 @@ $(document).on('click', '#refreshButton', function(event) {
       $('#playerName').val(recentSearch.IGN);
     }).fadeTo(fadeTimer.end, 1.0);
     $('#playerName').fadeTo(fadeTimer.start, 0).fadeTo(fadeTimer.end, 1.0);
-    // reset timer
-    refreshTimer.value = 0;
     // request data (using last search)
     requestData(recentSearch.IGN, recentSearch.gameData);
   }
   // otherwise if timer counting
   else if(gameMenu === false && !refreshTimer.switching)
-    alert('Please wait ' + (refreshTimer.delay - refreshTimer.value) + ' seconds to refresh!');
+    alert('Please wait ' + refreshTimer.value + ' seconds to refresh!');
 });
 
 function incrementTimer(timer) {
-  // update timer each interval
-  timer.timer = setInterval(function() {
+  // base case
+  if(timer.active)
+    return;
+  // activate timer
+  timer.active = true;
+  timer.value = timer.delay;
+  // intialize timer
+  let interval = setInterval(function() {
     // increment if below timer
-    if(timer.value < timer.delay)
-      timer.value += timer.increment;
+    if(timer.value > 0)
+      timer.value -= timer.increment;
     // else disable timer
-    else
-      clearInterval(timer.timer);
+    else {
+      timer.active = false;
+      clearInterval(interval);
+    }
   }, timer.timeout);
 }
 

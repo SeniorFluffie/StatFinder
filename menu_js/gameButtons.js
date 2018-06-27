@@ -6,7 +6,7 @@ $(document).on('click', '[name = "gameButton"]', function(event) {
   let multiPlatform = [];
   // get all games that enable systems
   for(let game of API_KEYS)
-    game.oneSystem ? '' : multiPlatform.push(game.game)
+    if(!game.oneSystem) multiPlatform.push(game.game);
   // stop default behavior
   event.stopPropagation();
   // play sound (and forward start time)
