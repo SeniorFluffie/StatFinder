@@ -226,10 +226,10 @@ function getMetaData(data, url, property) {
   }
 }
 
-function objectSearch(property, array, key) {
+function objectSearch(key, value, array) {
   // search for a specific object
   return Object.values(array).find(function (obj) {
-    return obj[key] == property;
+    return obj[key] == value;
   });
 }
 

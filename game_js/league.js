@@ -35,8 +35,8 @@ function leagueSearch(data) {
           player.championMastery = data.slice(0, 4);
           break;
           case 2:
-          // as req differs
-          data = data[0];
+          // get solo queue ranked stats
+          data = objectSearch('queueType', 'RANKED_SOLO_5x5', data);
           // save desired fields in object
           data === undefined ? player.rankedStats = {leagueName: 'N/A', tier: 'UNRANKED', rank: 'N/A', leaguePoints: '0', wins: '0', losses: '0'}
           : player.rankedStats = data;
@@ -65,10 +65,11 @@ function leagueSearch(data) {
 }
 
 function simplifyLeague(data) {
+  data.id = data.id + '&';
   // iterate through array
   for(let topChamp of data.championMastery) {
     // return champ with the desired id
-    let champ = objectSearch(topChamp.championId, realmData.championData, 'key');
+    let champ = objectSearch('key', topChamp.championId, realmData.championData);
     // localize src and name
     topChamp.champImage = 'http://ddragon.leagueoflegends.com/cdn/<ver>/img/champion/'.replace('<ver>', champ.version) + champ.image.full;
     topChamp.champName = champ.name;

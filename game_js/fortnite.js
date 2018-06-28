@@ -24,7 +24,7 @@ function fortniteTable(data) {
   {title: 'Matches', key: 'matches'}, {title: 'KPG', key: 'kpg'}, {title: 'Top 10', key: 'top10'}, {title: 'Top 25', key: 'top25'}],
 
   [{title: 'Top 1', key: 'top1'}, {title: 'Win %', key: 'winRatio'}, {title: 'Kills', key: 'kills'}, {title: 'KD', key: 'kd'},
-  {title: 'Matches', key: 'matches'}, {title: 'KPG:', key: 'kpg'}, {title: 'Top 5', key: 'top5'}, {title: 'Top 12', key: 'top12'}],
+  {title: 'Matches', key: 'matches'}, {title: 'KPG', key: 'kpg'}, {title: 'Top 5', key: 'top5'}, {title: 'Top 12', key: 'top12'}],
 
   [{title: 'Top 1', key: 'top1'}, {title: 'Win %', key: 'winRatio'}, {title: 'Kills', key: 'kills'}, {title: 'KD', key: 'kd'},
   {title: 'Matches', key: 'matches'}, {title: 'KPG', key: 'kpg'}, {title: 'Top 3', key: 'top3'}, {title: 'Top 6', key: 'top6'}]];

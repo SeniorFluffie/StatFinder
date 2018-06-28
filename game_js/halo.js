@@ -60,24 +60,22 @@ function simplifyHalo(data) {
   data.Arena = data.Arena[0].Result;
   data.Player = {EmblemImg: data.EmblemImg, SpartanRank: data.Arena.SpartanRank, Xp: data.Arena.Xp, Company: data.Company, ServiceTag: data.ServiceTag};
   // find top season
-  data.Arena.ArenaStats.TopSeason = objectSearch(data.Arena.ArenaStats.HighestCsrSeasonId, data.Seasons, 'id');
+  data.Arena.ArenaStats.TopSeason = objectSearch('id', data.Arena.ArenaStats.HighestCsrSeasonId, data.Seasons);
   // find top playlist in that season
-  data.Arena.ArenaStats.HighestCsrPlaylistId = objectSearch(data.Arena.ArenaStats.HighestCsrPlaylistId, data.Arena.ArenaStats.TopSeason.playlists, 'id').name;
+  data.Arena.ArenaStats.HighestCsrPlaylistId = objectSearch('id', data.Arena.ArenaStats.HighestCsrPlaylistId, data.Arena.ArenaStats.TopSeason.playlists).name;
   // change values to their names
   data.Arena.ArenaStats.HighestCsrSeasonId = data.Arena.ArenaStats.TopSeason.name + '&';
   // find rank
-  data.Arena.ArenaStats.HighestCsrAttained.DesignationId = objectSearch(data.Arena.ArenaStats.HighestCsrAttained.DesignationId,
-  data.Designations, 'id').name;
+  data.Arena.ArenaStats.HighestCsrAttained.DesignationId = objectSearch('id', data.Arena.ArenaStats.HighestCsrAttained.DesignationId, data.Designations).name;
   // find top weapon
-  data.Arena.ArenaStats.WeaponWithMostKills.WeaponId = objectSearch(data.Arena.ArenaStats.WeaponWithMostKills.WeaponId.StockId,
-  data.Weapons, 'id').name;
+  data.Arena.ArenaStats.WeaponWithMostKills.WeaponId = objectSearch('id', data.Arena.ArenaStats.WeaponWithMostKills.WeaponId.StockId, data.Weapons).name;
   // iterate through maps
   for(let match of data.Matches) {
     // swap gamemout name
-    match.GameBaseVariantId = objectSearch(match.GameBaseVariantId, data.Gamemodes, 'id').name;
+    match.GameBaseVariantId = objectSearch('id', match.GameBaseVariantId, data.Gamemodes).name;
     // swap out game name
     match.GameBaseVariantId === 'Campaign' ? match.Players[0].GameRank = 'N/A' :
-    match.Players[0].GameRank = objectSearch(match.Players[0].TeamId, match.Teams, 'Id').Rank;
+    match.Players[0].GameRank = objectSearch('Id', match.Players[0].TeamId, match.Teams).Rank;
   }
 }
 
