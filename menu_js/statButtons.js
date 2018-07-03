@@ -41,7 +41,7 @@ $(document).on('click', '#backButton', function(event) {
   enableConsoles(false);
 });
 
-const refreshTimer = {value: 0, delay: 7, increment: 1, timeout: 1000, active: false, switching: false};
+const refreshTimer = {value: 0, delay: 15, increment: 1, timeout: 1000, active: false, switching: false};
 
 // if refresh is pressed
 $(document).on('click', '#refreshButton', function(event) {
