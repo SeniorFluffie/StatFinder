@@ -1,13 +1,13 @@
 // for optimizations and debugging
 'use strict';
 
-const osu_URLS = {base: 'https://osu.ppy.sh/', url: ['/api/get_user_best?k=<key>&u=<ign>'], counter: 0};
+const osu_URLS = {base: 'https://osu.ppy.sh', url: '/api/get_user_best?k=<key>&u=<ign>'};
 
 function osuSearch(data) {
   // localize data
-  let player = {stats: data[0], key: data.key};
+  let player = {stats: data.data[0], key: data.options.key};
   // set list (before timeout)
-  retrieveMaps(osu_URLS.url[0], player, 'maps');
+  retrieveOsu(player, 'maps');
   // after reqs are recieved
   setTimeout(function() {
     // prepare data
@@ -15,17 +15,17 @@ function osuSearch(data) {
     // set icon
     $('#playerIcon').prop('src', '/images/icon_osu.png');
     // setup window
-    updateView(player, osuTable, undefined, osu_URLS);
+    updateView(player, osuTable);
     initializeWindow();
     // create table
     loadView();
   }, timeout.medium);
 }
 
-function retrieveMaps(url, data, prop) {
+function retrieveOsu(data, prop) {
   // create req and url
   let request = new XMLHttpRequest();
-  url = osu_URLS.base + url.replace('<key>', data.key).replace('<ign>', data.stats.username);
+  let url = osu_URLS.base + osu_URLS.url.replace('<key>', data.key).replace('<ign>', data.stats.username);
   // setup request
   request.open('GET', url, true);
   request.setRequestHeader('Access-Control-Allow-Origin', '*');
@@ -43,14 +43,17 @@ function retrieveMaps(url, data, prop) {
 }
 
 function simplifyOsu(data) {
-  for(let map of data.maps)
-    map.beatmap_id = map.beatmap_id + '&';
+  for(let map of data.maps) {
+    map.beatmap_id += '&';
+    map.date += '&';
+  }
 }
 
 function osuTable(data) {
   // table information
   const headerData = [{header: 'USER', index: [0, 1, 2]}, {header: '1ST TOP SCORE', property: ['maps', '0'], index: [3, 4]},
   {header: '2ND TOP SCORE', property: ['maps', '1'], index: [3, 4]}];
+
   const tableCells = [[{title: 'Level', key: 'level'}, {title: 'Total Score', key: 'total_score'}, {title: 'Ranked Score', key: 'ranked_score'},
   {title: 'Plays', key: 'playcount'}, {title: 'Accuracy', key: 'accuracy'}],
 
@@ -65,9 +68,11 @@ function osuTable(data) {
 
   [{title: 'Maximum Combo', key: 'maxcombo'}, {title: '50 Count', key: 'count50'}, {title: '100 Count', key: 'count100'},
   {title: '300 Count', key: 'count300'}, {title: 'Perfect', key: 'perfect'}]];
+
   // initialize table styling
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '120%', 'font-size': '9pt'}];
   let headerStyle = {'line-height': '105%'};
+
   // setup display
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);
 }

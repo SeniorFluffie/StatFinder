@@ -12,9 +12,7 @@ const API_KEYS = [
   {game: 'halo', key: 'XXXXXXXXXX', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
 ];
 
-const SYSTEM_TAGS = [
-  'pc', 'psn', 'xb1'
-];
+const SYSTEM_TAGS = ['pc', 'psn', 'xb1'];
 
 const timeout = {short: 500, medium: 750, long: 1000};
 
@@ -59,23 +57,30 @@ function search(IGN) {
     // add index property
     API_KEYS[gameIndex].gameID = gameIndex;
     // request data from the specific game
-    requestData(IGN, API_KEYS[gameIndex]);
+    requestData(API_KEYS[gameIndex], IGN);
   }
   // else display alert
   else if(gameIndex >= gameButtons.length && canSearch)
     alert('Please select a game to search stats for!');
 }
 
-function requestData(IGN, gameData) {
+function requestData(data, IGN) {
   // enable timer
   incrementTimer(refreshTimer);
   // store copy of search (for refresh button)
-  recentSearch === undefined ? recentSearch = {IGN: IGN, gameData: gameData} : recentSearch = Object.assign(recentSearch, {IGN: IGN, gameData: gameData});
+  recentSearch === undefined ? recentSearch = {options: Object.assign({IGN: IGN}, data)} : recentSearch = Object.assign(recentSearch, {options: {IGN: IGN}, data: data});
   // localize the url
   let url;
   // set url for single-platform
-  if(gameData.oneSystem)
-    url = gameData.url.replace('<ign>', IGN).replace('<key>', gameData.key);
+  if(data.oneSystem) {
+    // skip request, if using steam id
+    if((data.game === 'csgo' || data.game === 'dota') && numberCheck(IGN) && IGN.length === 17) {
+      updatePopup({options: Object.assign(data, {hasLoaded: false, steamid: IGN})}, data.gameID)
+      return;
+    }
+    // update url
+    url = data.url.replace('<ign>', IGN).replace('<key>', data.key);
+  }
   // else specify platform
   else {
     // get system select buttons
@@ -90,10 +95,10 @@ function requestData(IGN, gameData) {
       // else stop on the active button
       else if($(systemButtons[j]).hasClass('active')) {
         // convert to readable url
-        if(gameData.game === 'overwatch')
+        if(data.game === 'overwatch')
           IGN = IGN.replace('#', '-');
         // set url
-        url = gameData.url.replace('<sys>', SYSTEM_TAGS[j]).replace('<ign>', IGN).replace('<key>', gameData.key);
+        url = data.url.replace('<sys>', SYSTEM_TAGS[j]).replace('<ign>', IGN).replace('<key>', data.key);
         // update flag (stops spamming)
         canSearch = false;
         break;
@@ -104,23 +109,23 @@ function requestData(IGN, gameData) {
   let request = new XMLHttpRequest();
   // open asynchronous get request
   request.open('GET', url, true);
-  setHeader(gameData, request);
+  setHeader(data, request);
   // instructions for when the message is recieved
   request.onreadystatechange = function() {
     // handle status codes
     requestHandler(this, function () {
       // parse the data
-      let data = JSON.parse(request.responseText);
+      let gameData = JSON.parse(request.responseText);
       // general error check
-      if(data.error !== undefined || data === undefined || data.length === 0) {
+      if(gameData.error !== undefined || gameData === undefined || gameData.length === 0) {
         canSearch = true;
         alert('Error 404! User Not Found!');
       }
       else {
         // add response (for sending headers)
-        data = Object.assign({key: gameData.key, game: gameData.game, hasLoaded: false}, data);
+        gameData = {data: gameData, options: Object.assign(data, {hasLoaded: false})};
         // update window
-        updatePopup(data, gameData.gameID);
+        updatePopup(gameData, data.gameID);
       }
     });
   }
@@ -181,7 +186,7 @@ function updatePopup(data, gameID) {
     pubgSearch(data);
     break;
     case 3:
-    console.log('Begin CS:GO Search');
+    csgoSearch(data);
     break;
     case 4:
     console.log('Begin Dota 2 Search');
@@ -200,7 +205,7 @@ function updatePopup(data, gameID) {
 
 function getMetaData(data, url, property) {
   // only occur once
-  if(!data.hasLoaded || data.reload) {
+  if(!data.options.hasLoaded) {
     // iterate all meta urls
     for(let address of url) {
       // create req and url
@@ -208,21 +213,21 @@ function getMetaData(data, url, property) {
       let url = address.url;
       request.open('GET', url, true);
       // set header
-      setHeader(data, request);
+      setHeader(data.options, request);
       // upon success
       request.onreadystatechange = function() {
         requestHandler(this, function() {
           // save request to data
           let parse = JSON.parse(request.responseText);
           // either whole object or property
-          property ? data[address.key] = parse[property] : data[address.key] = parse;
+          property ? data['data'][address.key] = parse[property] : data['data'][address.key] = parse;
         });
       }
     // send header
     request.send();
     }
   // update flag
-  data.hasLoaded = true;
+  data.options.hasLoaded = true;
   }
 }
 
@@ -235,11 +240,11 @@ function objectSearch(key, value, array) {
 
 function initializeWindow() {
   // set player name and image
-  $('#playerName').val(recentSearch.IGN);
+  $('#playerName').val(recentSearch.options.IGN);
   // clear name field
   $('#searchBar')[0].value = '';
   // add view switch (if game has it)
-  recentSearch.gameData.oneView ? $('#viewSwitch').css('display', 'none') : $('#viewSwitch').css('display', 'inline');
+  recentSearch.options.oneView ? $('#viewSwitch').css('display', 'none') : $('#viewSwitch').css('display', 'inline');
   // show stats
   $('#statDisplay').fadeIn(500);
   // clear table
@@ -361,7 +366,7 @@ function createTableRow(table, data, property, css) {
     data.increment != undefined ? text = propertySearch(property[data.increment], data[i].key)
     : text = propertySearch(property, data[i].key);
     if(text == undefined)
-      text = 'N/A';
+      recentSearch['data']['game'] === 'csgo' ? text = '0' : text = 'N/A';
     // cell to be added
     if(data[i].img === undefined) {
       // regular cell

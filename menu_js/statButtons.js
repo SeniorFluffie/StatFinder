@@ -59,7 +59,7 @@ $(document).on('click', '#refreshButton', function(event) {
     }).fadeTo(fadeTimer.end, 1.0);
     $('#playerName').fadeTo(fadeTimer.start, 0).fadeTo(fadeTimer.end, 1.0);
     // request data (using last search)
-    requestData(recentSearch.IGN, recentSearch.gameData);
+    requestData(recentSearch.data, recentSearch.options.IGN);
   }
   // otherwise if timer counting
   else if(gameMenu === false && !refreshTimer.switching)

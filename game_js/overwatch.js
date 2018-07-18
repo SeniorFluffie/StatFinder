@@ -4,14 +4,13 @@
 let overwatchCounter = {value: 0, mod: 2};
 
 function overwatchSearch(data) {
-  console.log(data);
   // setup window
-  $('#playerIcon').prop('src', data.icon);
+  $('#playerIcon').prop('src', data.data.icon);
   // prepare data
-  localizeHeroes(data);
-  simplifyOverwatch(data);
+  localizeHeroes(data.data);
+  simplifyOverwatch(data.data);
   // setup window
-  updateView(data, overwatchTable, overwatchCounter);
+  updateView(data.data, overwatchTable, overwatchCounter);
   initializeWindow();
   // create tables
   loadView(false);
@@ -94,7 +93,7 @@ function addOverwatchCareer(data, tableNum) {
     // table information
     headerData = [{header: ['TOP COMPETITIVE STATS'], property: ['topHeroes'], index: [0, 0, 0], increment: -1}];
     tableCells = [[{title: 'Name', key: 'name', increment: true}, {title: 'Time', key: 'timePlayed'}, {title: 'Wins', key: 'gamesWon'}, {title: 'Win %', key: 'winPercentage'},
-    {title: 'Elims Per Life', key: 'eliminationsPerLife'}, {title: 'Weapon Accuracy', key: 'weaponAccuracy'}, {title: 'Objective Kills', key: 'objectiveKillsAvg'}]];
+    {title: 'Elims Per Life', key: 'eliminationsPerLife'}, {title: 'Weapon Acc', key: 'weaponAccuracy'}, {title: 'Obj Kills', key: 'objectiveKillsAvg'}]];
     headerStyle = {'line-height': '100%'};
     cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '115%', 'font-size': '8pt'}];
   }
@@ -107,6 +106,7 @@ function addOverwatchStats(data, headerNum) {
   let headerData;
   headerNum === 0 ? headerData = [{header: 'QUICKPLAY STATS', property: ['quickPlayStats'], index: [0, 1, 2, 3, 4]}]
   : headerData = [{header: 'COMPETITIVE STATS', property: ['competitiveStats'], index: [0, 1, 2, 3, 4]}];
+
   const tableCells = [[{title: 'Games', key: 'played'}, {title: 'Wins', key: 'won'}, {title: 'Time', key: 'timePlayed'}, {title: 'Cards', key: 'cards'},
   {title: 'Medals', key: 'medals'}, {title: 'Gold', key: 'medalsGold'}, {title: 'Silver', key: 'medalsSilver'}],
 
@@ -124,12 +124,14 @@ function addOverwatchStats(data, headerNum) {
   [{title: 'Most Dmg', key: 'allDamageDoneMostInGame'}, {title: 'Most HD', key: 'heroDamageDoneMostInGame'}, {title: 'Most SD', key: 'barrierDamageDoneMostInGame'},
   {title: 'Best Streak', key: 'killsStreakBest'}, {title: 'Most Healing', key: 'healingDoneMostInGame'}, {title: 'Most DA', key: 'defensiveAssistsMostInGame'},
   {title: 'Most OA', key: 'offensiveAssistsMostInGame'}]];
+
   // initialize table styling
   let headerStyle = {'line-height': '105%'};
   let fontSize, lineHeight;
   headerNum === 1 ? fontSize = '8pt' : fontSize = '9pt';
   headerNum === 1 ? lineHeight = '115%' : lineHeight = '125%';
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': lineHeight, 'font-size': fontSize}];
+
   // setup display
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);
 }

@@ -15,39 +15,39 @@ function haloSearch(data) {
   let metadata = [];
   // prepare urls
   for(let i = 0; i < halo_URLS.metadata.length; i++)
-    metadata[i] = {url: halo_URLS.base.concat(halo_URLS.metadata[i].url.replace('<id>', data.id)), key: halo_URLS.metadata[i].key};
+    metadata[i] = {url: halo_URLS.base.concat(halo_URLS.metadata[i].url), key: halo_URLS.metadata[i].key};
   // get data
   getMetaData(data, metadata, undefined);
-  getHaloData(data);
+  retrieveHalo(data);
   // after reqs are recieved
   setTimeout(function() {
     // prepare data
-    simplifyHalo(data);
+    simplifyHalo(data.data);
     // setup window
-    updateView(data, haloTable, haloCounter, halo_URLS);
+    updateView(data.data, haloTable, haloCounter, halo_URLS);
     initializeWindow();
     // create tables
     loadView();
-  }, timeout.medium);
+  }, timeout.long);
 }
 
-function getHaloData(data) {
+function retrieveHalo(data) {
   // iterate through all http requests
   for(let i = 0; i < halo_URLS.url.length; i++) {
-    let url = {url: halo_URLS.base.concat(halo_URLS.url[i].url.replace('<ign>', data.Gamertag)),
+    let url = {url: halo_URLS.base.concat(halo_URLS.url[i].url.replace('<ign>', data.data.Gamertag)),
     img: halo_URLS.url[i].img, key: halo_URLS.url[i].key};
     // create XML request
     let request = new XMLHttpRequest();
     // open asynchronous get request
     request.open('GET', url.url, true);
-    setHeader(data, request);
+    setHeader(data.options, request);
     // instructions for when the message is recieved
     request.onreadystatechange = function() {
       // handle request
       requestHandler(this, function () {
         // parse data
         let parse = url.img ? request.responseURL : JSON.parse(request.responseText).Results;
-        data[url.key] = parse;
+        data['data'][url.key] = parse;
         halo_URLS.counter++;
       });
     };
@@ -102,6 +102,7 @@ function addHaloStats(data) {
   // initialize table styling
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '180%', 'font-size': '9pt'}];
   let headerStyle = {'line-height': '165%'};
+
   // set icon
   $('#playerIcon').prop('src', propertySearch(data, 'SpartanImg'));
   // setup display
@@ -121,9 +122,11 @@ function addHaloCareer(data) {
 
   [{title: 'Position', key: 'GameRank', increment: true}, {title: 'Game Mode', key: 'GameBaseVariantId'}, {title: 'Kills', key: 'TotalKills'},
   {title: 'Deaths', key: 'TotalDeaths'}, {title: 'Assists', key: 'TotalAssists'}]];
+
   // initialize table styling
   let cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '150%', 'font-size': '9pt'}];
   let headerStyle = {'line-height': '135%'};
+
   // set icon
   $('#playerIcon').prop('src', propertySearch(data, 'SpartanImg'));
   // setup display
