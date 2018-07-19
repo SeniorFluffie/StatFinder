@@ -1,7 +1,7 @@
 {
   "name": "StatFinder",
   "short_name": "StatFinder",
-  "version": "1.3.2",
+  "version": "1.3.4",
   "description": "A simple yet sleek API for finding video game stats!",
   "options_page": "html/options.html",
 

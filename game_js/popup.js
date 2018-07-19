@@ -28,7 +28,7 @@ window.onload = function() {
     // localize lookup data
     let searchBar = $('#searchBar')[0];
     // save player name
-    let IGN = searchBar.value;
+    let IGN = searchBar.value.trim();
     // if no name in field
     IGN === '' ? alert('Please enter a valid username!') : search(IGN);
   };
