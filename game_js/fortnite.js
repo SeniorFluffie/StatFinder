@@ -4,6 +4,8 @@
 function fortniteSearch(data) {
   // set icon
   $('#playerIcon').prop('src', '/images/avatar_fortnite.png');
+  // simplify data
+  simplifyFortnite(data.data);
   // setup window
   updateView(data.data, fortniteTable);
   initializeWindow();
@@ -11,10 +13,18 @@ function fortniteSearch(data) {
   loadView();
 }
 
+function simplifyFortnite(data) {
+  // initialize stats
+  let stats = ['curr_p2', 'curr_p9', 'curr_p10'];
+  for(let stat of stats)
+    if(data['stats'][stat] !== undefined)
+      data['stats'][stat]['winRatio']['value'] += '%';
+}
+
 function fortniteTable(data) {
   // table information
-  const headerData = [{header: 'OVERALL', property: ['lifeTimeStats'], index: [0]}, {header: 'SOLO', index: [1], property: ['p2']},
-  {header: 'DUO', index: [2], property: ['p10']}, {header: 'SQUADS', index: [3], property: ['p9']}];
+  const headerData = [{header: 'OVERALL', property: ['lifeTimeStats'], index: [0]}, {header: 'SOLO', index: [1], property: ['stats', 'curr_p2']},
+  {header: 'DUO', index: [2], property: ['stats', 'curr_p10']}, {header: 'SQUADS', index: [3], property: ['stats', 'curr_p9']}];
 
   const tableCells = [
   [{title: 'Wins', key: 8}, {title: 'Win %', key: 9}, {title: 'Kills', key: 10}, {title: 'KD', key: 11},

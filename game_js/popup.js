@@ -14,7 +14,7 @@ const API_KEYS = [
 
 const SYSTEM_TAGS = ['pc', 'psn', 'xb1'];
 
-const timeout = {short: 500, medium: 750, long: 1000};
+const timeout = {short: 500, medium: 750, long: 1250};
 
 var canSearch = true;
 
@@ -239,12 +239,13 @@ function objectSearch(key, value, array) {
 }
 
 function initializeWindow() {
+  console.log(recentSearch);
   // set player name and image
   $('#playerName').val(recentSearch.options.IGN);
   // clear name field
   $('#searchBar')[0].value = '';
   // add view switch (if game has it)
-  recentSearch.options.oneView ? $('#viewSwitch').css('display', 'none') : $('#viewSwitch').css('display', 'inline');
+  recentSearch.options.oneView || recentSearch.options.oneView === undefined ? $('#viewSwitch').css('display', 'none') : $('#viewSwitch').css('display', 'inline');
   // show stats
   $('#statDisplay').fadeIn(500);
   // clear table
@@ -365,8 +366,8 @@ function createTableRow(table, data, property, css) {
     // switch data mid row or regular text
     data.increment != undefined ? text = propertySearch(property[data.increment], data[i].key)
     : text = propertySearch(property, data[i].key);
-    if(text == undefined)
-      recentSearch['data']['game'] === 'csgo' ? text = '0' : text = 'N/A';
+    if(text === undefined)
+      recentSearch['options']['game'] === 'csgo' || recentSearch['options']['game'] === 'fortnite' ? text = '0' : text = 'N/A';
     // cell to be added
     if(data[i].img === undefined) {
       // regular cell
@@ -381,13 +382,16 @@ function createTableRow(table, data, property, css) {
         text = capitalizeFirst(text);
       // otherwise use preset display values
       else if(text.displayValue !== undefined || text.value !== undefined)
-        text.displayValue ? text = text.displayValue : text = text.value;
+        text.displayValue ? (!text.displayValue.includes('%') ? text = text.value : text = text.displayValue) : text = text.value;
       // remove exclusion character
       if(typeof text === 'string' && text.includes('&'))
         text = text.toString().replace('&', '');
       // else add commas
       else
         text = addCommas(text);
+      // add % sign
+      if(data[i].title.includes('%') && !text.includes('%'))
+        text += '%';
       // set value
       cellValue = $('<span>').css(css[1]).text(text);
     } else {
