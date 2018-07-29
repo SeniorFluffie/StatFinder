@@ -2,14 +2,14 @@
 'use strict';
 
 const API_KEYS = [
-  {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
-  {game: 'league', key: 'RGAPI-b53729d0-1af3-43da-9fba-1916e56d7cd1', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
-  {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhYzFiMWNhMC01Yjk3LTAxMzYtNWFmMS0wMGFmNjY3OTJmZTAiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTMwMDM1NTcyLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIifQ.p9ZgBZXxIEs2V64DWkLGhCIYb4yHiB0ovVVPcWjoPOc', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: false},
-  {game: 'csgo', key: '615BEE5D5D8BDA3C41F7A775DB145B4E', url: 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=<key>&vanityurl=<ign>', oneSystem: true, regions: false, oneView: true},
-  {game: 'dota', key: '615BEE5D5D8BDA3C41F7A775DB145B4E', url: '', oneSystem: true, regions: true, oneView: true},
-  {game: 'overwatch', key: '', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
-  {game: 'osu', key: '18610ba1024bc909fa689820282d8a94a6dd4ed5', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
-  {game: 'halo', key: 'ff1be62eda98426fa245be36594493ba', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
+  {game: 'fortnite', key: 'XXXXXXXXXX', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
+  {game: 'league', key: 'XXXXXXXXXX', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
+  {game: 'pubg', key: 'XXXXXXXXXX', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
+  {game: 'csgo', key: 'XXXXXXXXXX', url: 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=<key>&vanityurl=<ign>', oneSystem: true, regions: false, oneView: true},
+  {game: 'dota', key: 'XXXXXXXXXX', url: '', oneSystem: true, regions: true, oneView: true},
+  {game: 'overwatch', key: 'XXXXXXXXXX', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
+  {game: 'osu', key: 'XXXXXXXXXX', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
+  {game: 'halo', key: 'XXXXXXXXXX', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
 ];
 
 const SYSTEM_TAGS = ['pc', 'psn', 'xb1'];
@@ -68,9 +68,7 @@ function requestData(data, IGN) {
   // enable timer
   incrementTimer(refreshTimer);
   // store copy of search (for refresh button)
-  console.log(recentSearch, IGN, data);
   recentSearch === undefined ? recentSearch = {options: Object.assign({IGN: IGN}, data)} : recentSearch = Object.assign({options: Object.assign(recentSearch.options, {IGN: IGN})}, {data: data});
-  console.log(recentSearch);
   // localize the url
   let url;
   // set url for single-platform
@@ -241,7 +239,6 @@ function objectSearch(key, value, array) {
 }
 
 function initializeWindow() {
-  console.log(recentSearch);
   // set player name and image
   $('#playerName').val(recentSearch.options.IGN);
   // clear name field
