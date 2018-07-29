@@ -2,14 +2,14 @@
 'use strict';
 
 const API_KEYS = [
-  {game: 'fortnite', key: 'XXXXXXXXXX', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
-  {game: 'league', key: 'XXXXXXXXXX', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
-  {game: 'pubg', key: 'XXXXXXXXXX', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
-  {game: 'csgo', key: 'XXXXXXXXXX', url: 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=<key>&vanityurl=<ign>', oneSystem: true, regions: false, oneView: true},
-  {game: 'dota', key: 'XXXXXXXXXX', url: '', oneSystem: true, regions: true, oneView: true},
-  {game: 'overwatch', key: 'XXXXXXXXXX', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
-  {game: 'osu', key: 'XXXXXXXXXX', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
-  {game: 'halo', key: 'XXXXXXXXXX', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
+  {game: 'fortnite', key: '428d3a9d-9dba-4686-a5b7-0aabcc2c83c5', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
+  {game: 'league', key: 'RGAPI-b53729d0-1af3-43da-9fba-1916e56d7cd1', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
+  {game: 'pubg', key: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhYzFiMWNhMC01Yjk3LTAxMzYtNWFmMS0wMGFmNjY3OTJmZTAiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTMwMDM1NTcyLCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN0YXRmaW5kZXIifQ.p9ZgBZXxIEs2V64DWkLGhCIYb4yHiB0ovVVPcWjoPOc', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: false},
+  {game: 'csgo', key: '615BEE5D5D8BDA3C41F7A775DB145B4E', url: 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=<key>&vanityurl=<ign>', oneSystem: true, regions: false, oneView: true},
+  {game: 'dota', key: '615BEE5D5D8BDA3C41F7A775DB145B4E', url: '', oneSystem: true, regions: true, oneView: true},
+  {game: 'overwatch', key: '', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
+  {game: 'osu', key: '18610ba1024bc909fa689820282d8a94a6dd4ed5', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
+  {game: 'halo', key: 'ff1be62eda98426fa245be36594493ba', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
 ];
 
 const SYSTEM_TAGS = ['pc', 'psn', 'xb1'];
@@ -50,7 +50,7 @@ function search(IGN) {
     if($(this).hasClass('active'))
       return false;
     // increment index
-    gameIndex++;
+    ++gameIndex;
   });
   // if a game is selected
   if(gameIndex < gameButtons.length && canSearch) {
@@ -68,7 +68,9 @@ function requestData(data, IGN) {
   // enable timer
   incrementTimer(refreshTimer);
   // store copy of search (for refresh button)
-  recentSearch === undefined ? recentSearch = {options: Object.assign({IGN: IGN}, data)} : recentSearch = Object.assign(recentSearch, {options: {IGN: IGN}, data: data});
+  console.log(recentSearch, IGN, data);
+  recentSearch === undefined ? recentSearch = {options: Object.assign({IGN: IGN}, data)} : recentSearch = Object.assign({options: Object.assign(recentSearch.options, {IGN: IGN})}, {data: data});
+  console.log(recentSearch);
   // localize the url
   let url;
   // set url for single-platform
@@ -86,7 +88,7 @@ function requestData(data, IGN) {
     // get system select buttons
     let systemButtons = $('.systemButton');
     // iterate through all button elements
-    for(var j = 0; j < systemButtons.length; j++) {
+    for(var j = 0; j < systemButtons.length; ++j) {
       // if there is no system selected
       if(!$(systemButtons[j]).hasClass('active') && j === systemButtons.length - 1) {
         alert('Please select a system you would like to search the stats for!');
@@ -311,14 +313,14 @@ function createTable(data, tableData, style) {
   let cellStyle = style[1];
   // get table widths
   let tableWidth = [];
-  for(let rows = 0; rows < headerData.length; rows++)
+  for(let rows = 0; rows < headerData.length; ++rows)
     tableWidth[rows] = cellData[headerData[rows].index[0]].length;
   // retrieve table
   var statTable = $('<table>', {'id': 'statTable', 'class': 'statTable', 'rules': 'all'});
   // add table to div then to window
   $('#statDisplay').append($('#tableDiv').append(statTable));
   // iterate through headers
-  for(let i = 0; i < headerData.length; i++) {
+  for(let i = 0; i < headerData.length; ++i) {
     // create header
     createHeaderRow(statTable, headerData[i].header, tableWidth[i], headerStyle);
     // further the data path
@@ -327,7 +329,7 @@ function createTable(data, tableData, style) {
       for(let path of headerData[i].property)
         property = property[path];
     // iterate through indices (rows)
-    for(let j = 0; j < headerData[i].index.length; j++) {
+    for(let j = 0; j < headerData[i].index.length; ++j) {
       let header = headerData[i];
       // increment each row for its own data
       if(header.counter !== undefined)
@@ -358,7 +360,7 @@ function createTableRow(table, data, property, css) {
   // row to be added
   let tableRow = $('<tr>');
   // iterate through each cell
-  for(let i = 0; i < data.length; i++) {
+  for(let i = 0; i < data.length; ++i) {
     let cellTitle, cellValue, text;
     // increment data
     if(data[i].increment)

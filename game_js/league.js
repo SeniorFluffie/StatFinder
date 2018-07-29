@@ -13,7 +13,7 @@ const realmData = {version: '8.11.1'};
 function leagueSearch(data) {
   data.data = Object.assign(retrieveLeague(data), data.data);
   // modify urls
-  for(let i = 0; i < league_URLS.metadata.length; i++)
+  for(let i = 0; i < league_URLS.metadata.length; ++i)
     league_URLS.metadata[i].url = league_URLS.metadata[i].url.replace('<ver>', realmData.version);
   // get data
   getMetaData(data, league_URLS.metadata, 'data');
@@ -33,7 +33,7 @@ function retrieveLeague(data) {
   // store initial search
   let player = {id: propertySearch(data, 'id'), profileIconId: propertySearch(data, 'profileIconId'), level: propertySearch(data, 'summonerLevel')};
   // iterate through all http requests
-  for(let i = 0; i < league_URLS.url.length; i++) {
+  for(let i = 0; i < league_URLS.url.length; ++i) {
     // swap out url tag
     let url = league_URLS.base.concat(league_URLS.url[i].replace('<id>', player.id).concat('?api_key=' + data.options.key));
     // create XML request
@@ -61,7 +61,7 @@ function retrieveLeague(data) {
           : player.rankedStats = data;
           break;
         }
-        league_URLS.counter++;
+        ++league_URLS.counter;
       });
     };
     request.send();

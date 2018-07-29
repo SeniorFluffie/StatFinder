@@ -36,7 +36,7 @@ function retrieveOsu(data, prop) {
       // save data
       let numMaps = 4;
       data[prop] = JSON.parse(request.responseText).slice(0, numMaps);
-      osu_URLS.counter++;
+      ++osu_URLS.counter;
     });
   };
   request.send();

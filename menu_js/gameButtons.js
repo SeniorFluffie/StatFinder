@@ -14,7 +14,7 @@ $(document).on('click', '[name = "gameButton"]', function(event) {
   buttonPress.currentTime = 0.125;
   buttonPress.play();
   // if the game is multi-platform
-  for(let i = 0 ; i < multiPlatform.length; i++) {
+  for(let i = 0 ; i < multiPlatform.length; ++i) {
     // check id, if true turn on system buttons
     if($(this).attr('id') == multiPlatform[i] && !$(this).hasClass('active')) {
       enableConsoles(true);
@@ -48,7 +48,7 @@ function enableConsoles(multiPlatform) {
   // get the platform buttons
   let systemButtons = $('.systemButton');
   // iterate through them
-  for(let i = 0; i < systemButtons.length; i++) {
+  for(let i = 0; i < systemButtons.length; ++i) {
     // enable the system buttons
     if(multiPlatform)
       $(systemButtons[i]).prop('disabled', false);

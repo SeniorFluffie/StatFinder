@@ -44,7 +44,7 @@ function retrievePubg(url, data, prop) {
       // localize data
       let tempData = JSON.parse(request.responseText).data;
       data.data[prop] = tempData[tempData.length - 1] || tempData.attributes.gameModeStats;
-      pubg_URLS.counter++;
+      ++pubg_URLS.counter;
     });
   };
   request.send();

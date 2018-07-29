@@ -14,7 +14,7 @@ function haloSearch(data) {
   // prepare new array (incase id changes)
   let metadata = [];
   // prepare urls
-  for(let i = 0; i < halo_URLS.metadata.length; i++)
+  for(let i = 0; i < halo_URLS.metadata.length; ++i)
     metadata[i] = {url: halo_URLS.base.concat(halo_URLS.metadata[i].url), key: halo_URLS.metadata[i].key};
   // get data
   getMetaData(data, metadata, undefined);
@@ -33,7 +33,7 @@ function haloSearch(data) {
 
 function retrieveHalo(data) {
   // iterate through all http requests
-  for(let i = 0; i < halo_URLS.url.length; i++) {
+  for(let i = 0; i < halo_URLS.url.length; ++i) {
     let url = {url: halo_URLS.base.concat(halo_URLS.url[i].url.replace('<ign>', data.data.Gamertag)),
     img: halo_URLS.url[i].img, key: halo_URLS.url[i].key};
     // create XML request
@@ -48,7 +48,7 @@ function retrieveHalo(data) {
         // parse data
         let parse = url.img ? request.responseURL : JSON.parse(request.responseText).Results;
         data['data'][url.key] = parse;
-        halo_URLS.counter++;
+        ++halo_URLS.counter;
       });
     };
     request.send();
