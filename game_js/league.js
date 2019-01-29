@@ -1,20 +1,37 @@
 // for optimizations and debugging
 'use strict';
 
+// maintain current server version
+const leagueVersion = {league: 'v4'};
+
 const league_URLS = {base: 'https://na1.api.riotgames.com',
-url: ['/lol/champion-mastery/v3/scores/by-summoner/<id>',
-'/lol/champion-mastery/v3/champion-masteries/by-summoner/<id>',
-'/lol/league/v3/positions/by-summoner/<id>'],
+url: ['/lol/champion-mastery/' + leagueVersion.league + '/scores/by-summoner/<id>',
+'/lol/champion-mastery/' + leagueVersion.league + '/champion-masteries/by-summoner/<id>',
+'/lol/league/' + leagueVersion.league + '/positions/by-summoner/<id>'],
 metadata: [{url: 'http://ddragon.leagueoflegends.com/cdn/<ver>/data/en_US/champion.json', key: 'championData'}],
 counter: 0};
 
-const realmData = {version: '8.11.1'};
+function getLeagueVersion() {
+  // create XML request
+  let request = new XMLHttpRequest();
+  // open asynchronous get request
+  request.open('GET', "https://ddragon.leagueoflegends.com/realms/na.json", true);
+  // instructions for when the message is recieved
+  request.onreadystatechange = function() {
+    // set league versions
+    requestHandler(request, function() {
+      leagueVersion.dataDragon= JSON.parse(request.responseText).v;
+    });
+  }
+  // send get request
+  request.send();
+}
 
 function leagueSearch(data) {
   data.data = Object.assign(retrieveLeague(data), data.data);
   // modify urls
   for(let i = 0; i < league_URLS.metadata.length; ++i)
-    league_URLS.metadata[i].url = league_URLS.metadata[i].url.replace('<ver>', realmData.version);
+    league_URLS.metadata[i].url = league_URLS.metadata[i].url.replace('<ver>', leagueVersion.dataDragon);
   // get data
   getMetaData(data, league_URLS.metadata, 'data');
   // after reqs are recieved
@@ -84,8 +101,8 @@ function simplifyLeague(data) {
 function leagueTable(data) {
   // table information
   const headerData = [{header: 'SUMMONER', index: [0], property: ['']}, {header: 'RANKED', property: ['rankedStats'], index: [1]}];
-  const tableCells = [[{title: 'Summoner ID', key: 'id'}, {title: 'Level', key: 'level'}, {title: 'Total Mastery', key: 'masteryLevel'}],
-  [{title: 'League', key: 'leagueName'}, {title: 'Tier', key: 'tier'}, {title: 'Rank', key: 'rank'}, {title: 'LP', key: 'leaguePoints'},
+  const tableCells = [[{title: 'Level', key: 'level'}, {title: 'Total Mastery', key: 'masteryLevel'}, {title: 'League', key: 'leagueName'}],
+  [{title: 'Tier', key: 'tier'}, {title: 'Rank', key: 'rank'}, {title: 'LP', key: 'leaguePoints'},
   {title: 'Wins', key: 'wins'}, {title: 'Losses', key: 'losses'}]];
 
   const masteryData = [{header: 'TOP MASTERY', property: ['championMastery'], index: [0, 0], increment: -1}];
@@ -97,7 +114,7 @@ function leagueTable(data) {
   let headerStyle = {'line-height': '150%'};
 
   // set icon
-  $('#playerIcon').prop('src', 'http://ddragon.leagueoflegends.com/cdn/<ver>/img/profileicon/<profileIconId>.png'.replace('<ver>', realmData.version).replace('<profileIconId>', data.profileIconId));
+  $('#playerIcon').prop('src', 'http://ddragon.leagueoflegends.com/cdn/<ver>/img/profileicon/<profileIconId>.png'.replace('<ver>', leagueVersion.dataDragon).replace('<profileIconId>', data.profileIconId));
 
   // setup display
   createTable(data, [headerData, tableCells], [headerStyle, cellStyle]);

@@ -1,6 +1,7 @@
 // for optimizations and debugging
 'use strict';
 
+// elements on options page
 const sliderNames = ['iconSlider', 'searchSlider', 'buttonSlider'];
 
 // load user options

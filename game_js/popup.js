@@ -1,26 +1,31 @@
 // for optimizations and debugging
 'use strict';
 
+// initial request data
 const API_KEYS = [
   {game: 'fortnite', key: 'XXXXXXXXXX', url: 'https://api.fortnitetracker.com/v1/profile/<sys>/<ign>', oneSystem: false, regions: false, oneView: true},
-  {game: 'league', key: 'XXXXXXXXXX', url: 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
-  {game: 'pubg', key: 'XXXXXXXXXX', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: true},
+  {game: 'league', key: 'XXXXXXXXXX', url: 'https://na1.api.riotgames.com/lol/summoner/' + leagueVersion.league + '/summoners/by-name/<ign>?api_key=<key>', oneSystem: true, regions: false, oneView: true},
+  {game: 'pubg', key: 'XXXXXXXXXX', url : 'https://api.playbattlegrounds.com/shards/pc-na/players?filter[playerNames]=<ign>', oneSystem: true, regions: true, oneView: false},
   {game: 'csgo', key: 'XXXXXXXXXX', url: 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=<key>&vanityurl=<ign>', oneSystem: true, regions: false, oneView: true},
   {game: 'dota', key: 'XXXXXXXXXX', url: '', oneSystem: true, regions: true, oneView: true},
-  {game: 'overwatch', key: 'XXXXXXXXXX', url: 'https://ow-api.com/v1/stats/<sys>/us/<ign>/complete', oneSystem: false, regions: true, oneView: false},
+  {game: 'overwatch', key: 'XXXXXXXXXX', url: 'https://ovrstat.com/stats/<sys>/<ign>', oneSystem: false, regions: true, oneView: false},
   {game: 'osu', key: 'XXXXXXXXXX', url: 'https://osu.ppy.sh/api/get_user?k=<key>&u=<ign>', oneSystem: true, regions: false, oneView: true},
   {game: 'halo', key: 'XXXXXXXXXX', url: 'https://www.haloapi.com/profile/h5/profiles/<ign>/appearance', oneSystem: true, regions: false, oneView: false}
 ];
 
-const SYSTEM_TAGS = ['pc', 'psn', 'xb1'];
+// tags to identify different platforms
+const SYSTEM_TAGS = ['pc', 'psn', 'xbl'];
+const PC_REGION = 'us'
 
-const timeout = {short: 500, medium: 750, long: 1250};
-
+// allows search to process (modified by refresh / timeout)
 var canSearch = true;
+const timeout = {short: 500, medium: 750, long: 1250};
 
 window.onload = function() {
   // player search
   let searchButton = $('#searchButton')[0];
+  // get current game version
+  getLeagueVersion();
   // when the search button is pressed
   searchButton.onclick = function(element) {
     // stop default post req
@@ -94,11 +99,14 @@ function requestData(data, IGN) {
       }
       // else stop on the active button
       else if($(systemButtons[j]).hasClass('active')) {
+        let system = SYSTEM_TAGS[j];
         // convert to readable url
-        if(data.game === 'overwatch')
+        if(data.game === 'overwatch') {
           IGN = IGN.replace('#', '-');
+          system += j == 0 ? '/' + PC_REGION : '';
+         }
         // set url
-        url = data.url.replace('<sys>', SYSTEM_TAGS[j]).replace('<ign>', IGN).replace('<key>', data.key);
+        url = data.url.replace('<sys>', system).replace('<ign>', IGN).replace('<key>', data.key);
         // update flag (stops spamming)
         canSearch = false;
         break;
@@ -135,12 +143,18 @@ function requestData(data, IGN) {
 
 function setHeader(data, request) {
   // specific options (for each game)
-  if(data.game === 'fortnite')
+  if(data.game === 'fortnite') {
+    console.log(data.key);
     request.setRequestHeader('TRN-Api-Key', data.key);
+  }
+  else if(data.game === 'league')
+    request.setRequestHeader('Access-Control-Allow-Origin', '*');
   else if(data.game === 'pubg') {
     request.setRequestHeader("Accept", "application/vnd.api+json");
     request.setRequestHeader("Authorization", "Bearer <key>".replace("<key>", data.key));
   }
+  else if(data.game === 'overwatch')
+    request.setRequestHeader('Access-Control-Allow-Origin', '*');
   else if(data.game === 'osu')
     request.setRequestHeader('Access-Control-Allow-Origin', '*');
   else if(data.game === 'halo') {
@@ -366,7 +380,7 @@ function createTableRow(table, data, property, css) {
     data.increment != undefined ? text = propertySearch(property[data.increment], data[i].key)
     : text = propertySearch(property, data[i].key);
     if(text === undefined)
-      recentSearch['options']['game'] === 'csgo' || recentSearch['options']['game'] === 'fortnite' ? text = '0' : text = 'N/A';
+      recentSearch['options']['game'] === 'csgo' || recentSearch['options']['game'] === 'fortnite' || recentSearch['options']['game'] === 'overwatch' ? text = '0' : text = 'N/A';
     // cell to be added
     if(data[i].img === undefined) {
       // regular cell

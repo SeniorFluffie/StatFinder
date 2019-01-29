@@ -4,6 +4,7 @@
 let overwatchCounter = {value: 0, mod: 2};
 
 function overwatchSearch(data) {
+  setTimeout(function() {
   // setup window
   $('#playerIcon').prop('src', data.data.icon);
   // prepare data
@@ -14,6 +15,7 @@ function overwatchSearch(data) {
   initializeWindow();
   // create tables
   loadView(false);
+  }, 2000);
 }
 
 function localizeHeroes(data) {
@@ -52,12 +54,10 @@ function simplifyOverwatch(data) {
   const props = ['competitiveStats', 'quickPlayStats'];
   // iterate each set of stats
   for(let path of props) {
-    // change deaths to a number (bad field from API)
-    let deaths = data[path].careerStats.allHeroes.deaths;
-    data[path].careerStats.allHeroes.deaths = deaths.deaths;
     // delete un-used interfering properties
     delete data[path].topHeroes;
     delete data[path].careerStats.allHeroes.average;
+    delete data[path].careerStats.allHeroes.deaths;
   }
 }
 
@@ -68,22 +68,24 @@ function overwatchTable(data, tableNum) {
 }
 
 function addOverwatchCareer(data, tableNum) {
+  console.log(data);
   // intialize variables
   let headerData, tableCells, headerStyle, cellStyle;
   // if quickplay table
   if(tableNum === 0)  {
     headerData = [{header: ['CAREER STATS'], index: [0]}];
-    tableCells = [[{title: '', key: 'levelIcon', img: true}]];
+    tableCells = [[{title: '', key: 'levelIcon', img: true}, {title: 'Level', key: 'level'}]];
     // incase of no prestige
     if(data.prestigeIcon !== '')
-      tableCells[0].push({title: '', key: 'prestigeIcon', img: true});
-    // add in level cell
-    tableCells[0].push({title: 'Level', key: 'level'}, {title: 'Prestige', key: 'prestige'});
+      tableCells[0].push({title: '', key: 'prestigeIcon', img: true}, {title: 'Prestige', key: 'prestige'});
     // incase of no rating
     if(data.ratingIcon !== '')
-      tableCells[0].push({title: '', key: 'ratingIcon', img: true});
+      tableCells[0].push({title: '', key: 'ratingIcon', img: true}, {title: 'Rating', key: 'rating'});
+    // incase of no rating
+    if(data.endorsementIcon !== '')
+      tableCells[0].push({title: '', key: 'endorsementIcon', img: true}, {title: 'Endorse', key: 'endorsement'});
     // incase of no rank
-    if(data.ratingName === '' || data.rating === '')
+    if(data.ratingName === '' && data.rating === '')
       tableCells[0].push({title: 'Rank', key: 'N/A'}, {title: 'Value', key: 'N/A'});
     headerStyle = {'line-height': '105%'};
     cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '130%', 'font-size': '10pt'}];
@@ -92,7 +94,7 @@ function addOverwatchCareer(data, tableNum) {
   else if(tableNum === 1) {
     // table information
     headerData = [{header: ['TOP COMPETITIVE STATS'], property: ['topHeroes'], index: [0, 0, 0], increment: -1}];
-    tableCells = [[{title: 'Name', key: 'name', increment: true}, {title: 'Time', key: 'timePlayed'}, {title: 'Wins', key: 'gamesWon'}, {title: 'Win %', key: 'winPercentage'},
+    tableCells = [[{title: 'Name', key: 'name', increment: true}, {title: 'Played', key: 'timePlayed'}, {title: 'Wins', key: 'gamesWon'}, {title: 'Win %', key: 'winPercentage'},
     {title: 'Elims Per Life', key: 'eliminationsPerLife'}, {title: 'Weapon Acc', key: 'weaponAccuracy'}, {title: 'Obj Kills', key: 'objectiveKillsAvg'}]];
     headerStyle = {'line-height': '100%'};
     cellStyle = [{'font-weight': 'bold', 'display': 'block'}, {'font-weight': 'normal'}, {'line-height': '115%', 'font-size': '8pt'}];
@@ -107,7 +109,7 @@ function addOverwatchStats(data, headerNum) {
   headerNum === 0 ? headerData = [{header: 'QUICKPLAY STATS', property: ['quickPlayStats'], index: [0, 1, 2, 3, 4]}]
   : headerData = [{header: 'COMPETITIVE STATS', property: ['competitiveStats'], index: [0, 1, 2, 3, 4]}];
 
-  const tableCells = [[{title: 'Games', key: 'played'}, {title: 'Wins', key: 'won'}, {title: 'Time', key: 'timePlayed'}, {title: 'Cards', key: 'cards'},
+  const tableCells = [[{title: 'Games', key: 'gamesPlayed'}, {title: 'Wins', key: 'gamesWon'}, {title: 'Played', key: 'timePlayed'}, {title: 'Cards', key: 'cards'},
   {title: 'Medals', key: 'medals'}, {title: 'Gold', key: 'medalsGold'}, {title: 'Silver', key: 'medalsSilver'}],
 
   [{title: 'Elims', key: 'eliminations'}, {title: 'Final Blows', key: 'finalBlows'}, {title: 'Solo Kills', key: 'soloKills'}, {title: 'Deaths', key: 'deaths'},

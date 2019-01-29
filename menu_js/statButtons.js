@@ -55,11 +55,11 @@ $(document).on('click', '#refreshButton', function(event) {
     // refresh animation
     $('#tableDiv').fadeTo(fadeTimer.start, 0, function() {
       // set name
-      $('#playerName').val(recentSearch.IGN);
+      $('#playerName').val(recentSearch.options.IGN);
     }).fadeTo(fadeTimer.end, 1.0);
     $('#playerName').fadeTo(fadeTimer.start, 0).fadeTo(fadeTimer.end, 1.0);
     // request data (using last search)
-    requestData(recentSearch.data, recentSearch.options.IGN);
+    requestData(recentSearch.options, recentSearch.options.IGN);
   }
   // otherwise if timer counting
   else if(gameMenu === false && !refreshTimer.switching)
