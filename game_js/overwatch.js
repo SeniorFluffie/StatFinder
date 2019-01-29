@@ -4,7 +4,6 @@
 let overwatchCounter = {value: 0, mod: 2};
 
 function overwatchSearch(data) {
-  setTimeout(function() {
   // setup window
   $('#playerIcon').prop('src', data.data.icon);
   // prepare data
@@ -15,7 +14,6 @@ function overwatchSearch(data) {
   initializeWindow();
   // create tables
   loadView(false);
-  }, 2000);
 }
 
 function localizeHeroes(data) {
