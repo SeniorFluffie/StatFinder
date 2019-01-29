@@ -182,6 +182,7 @@ function requestHandler(request, success) {
       alert('Error 500! Internal Server Error!');
     else if(request.status === 503)
       alert('Error 503! Service Unavailable!');
+    canSearch = true;
   }
 }
 
