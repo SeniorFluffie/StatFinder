@@ -169,19 +169,19 @@ function requestHandler(request, success) {
       success();
     // else display the error code
     else if(request.status === 400)
-    alert('Error 400! Bad Search Request!');
+      alert('Error 400! Bad Search Request!');
     else if(request.status === 401)
-    alert('Error 401! Unauthorized Request!');
+      alert('Error 401! Unauthorized Request!');
     else if(request.status === 403)
-    alert('Error 403! Forbidden Request!');
+      alert('Error 403! Forbidden Request!');
     else if(request.status === 404)
-    alert('Error 404! User Not Found!');
+      alert('Error 404! User Not Found!');
     else if(request.status === 429)
-    alert('Error 429! Too Many Requests!');
+      alert('Error 429! Too Many Requests!');
     else if(request.status === 500)
-    alert('Error 500! Internal Server Error!');
+      alert('Error 500! Internal Server Error!');
     else if(request.status === 503)
-    alert('Error 503! Service Unavailable!');
+      alert('Error 503! Service Unavailable!');
   }
 }
 
