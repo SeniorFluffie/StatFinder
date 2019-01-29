@@ -143,10 +143,8 @@ function requestData(data, IGN) {
 
 function setHeader(data, request) {
   // specific options (for each game)
-  if(data.game === 'fortnite') {
-    console.log(data.key);
+  if(data.game === 'fortnite')
     request.setRequestHeader('TRN-Api-Key', data.key);
-  }
   else if(data.game === 'league')
     request.setRequestHeader('Access-Control-Allow-Origin', '*');
   else if(data.game === 'pubg') {

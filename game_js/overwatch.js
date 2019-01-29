@@ -68,7 +68,6 @@ function overwatchTable(data, tableNum) {
 }
 
 function addOverwatchCareer(data, tableNum) {
-  console.log(data);
   // intialize variables
   let headerData, tableCells, headerStyle, cellStyle;
   // if quickplay table
